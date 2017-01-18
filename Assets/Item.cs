@@ -3,37 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Item : MonoBehaviour {
-	bool equipped;
+	public bool equipped;
 	public GameObject targetHand;
+	public Controller_Handler handController;
 	Rigidbody rb;
+	public Vector3 itemVel;
 
 	void Awake () {
 		rb = GetComponent<Rigidbody> ();
-		rb.useGravity = false;
-		rb.isKinematic = true;
+
 	}
 	// Use this for initialization
 	void Start () {
-		
+		rb.useGravity = false;
+		rb.isKinematic = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (equipped) {
-			Vector3 targetVector = targetHand.transform.position - transform.position;
-			Vector3 vel = Vector3.zero;
-			rb.MovePosition (Vector3.SmoothDamp (transform.position, targetHand.transform.position, ref vel, 0.6f));
+			rb.MovePosition (Vector3.SmoothDamp (transform.position, targetHand.transform.position, ref itemVel, 0.6f));
 		}
 	}
 
-	void PickUp (GameObject hand) {
+	public virtual void PickUp (GameObject hand) {
+		handController = hand.GetComponent<Controller_Handler> ();
 		equipped = true;
 		targetHand = hand;
 		rb.useGravity = false;
 		rb.isKinematic = true;
 	}
 
-	void PutDown () {
+	public virtual void PutDown () {
+		handController = null;
 		equipped = false;
 		targetHand = null;
 		rb.useGravity = true;

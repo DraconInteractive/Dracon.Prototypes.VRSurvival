@@ -10,10 +10,14 @@ public class Rock : MonoBehaviour {
 		rockContent = Random.Range (0, 100);
 	}
 
-	public void PickAt (PickAxe pick) {
-		rockContent -= pick.pickStrength;
+	public void PickAt (int pickStrength) {
+		rockContent -= pickStrength;
 		if (rockContent <= 0) {
-			Destroy (this.gameObject);
+			DestroyRock ();
 		}
+	}
+
+	public void DestroyRock () {
+		
 	}
 }
