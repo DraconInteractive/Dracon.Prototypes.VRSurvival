@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using HTC.UnityPlugin.Vive;
 
 
 public class Player_Main : MonoBehaviour {
+	#region baseVar-STD
 	public static Player_Main player;
 
 	Rigidbody rb;
@@ -15,16 +17,26 @@ public class Player_Main : MonoBehaviour {
 	Camera mainC;
 
 	public float speed;
+	#endregion
 
+	#region baseVar-INV
 	//Inventory
 	public int rockAmount, woodAmount;
 
-	
-
 	public Item leftHandItem, rightHandItem;
+	#endregion
 
-	public GameObject mainMenuTemplate;
+	#region baseVAR-MENU
+	//Menu's
+	public GameObject mainMenuTemplate, leftMenu, rightMenu;
 
+
+	#endregion
+
+	#region baseVar-SPELLS
+
+	public GameObject leftSpell, rightSpell;
+	#endregion
 	//TODO Invis rendermodels when equip item, reappear when disequip;
 	void Awake () {
 		player = GetComponent<Player_Main> ();
@@ -32,12 +44,23 @@ public class Player_Main : MonoBehaviour {
 		mainC = Camera.main;
 	}
 
+	void Start () {
+		ToggleLeftMenu (false);
+		ToggleRightMenu (false);
+		EndRightCast ();
+		EndLeftCast ();
+	}
+
 	void Update () {
 		P_Input ();
+		PlayerMenu ();
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
-		Movement ();
+		if (!leftMenu.activeSelf) {
+			Movement ();
+		}
+
 	}
 
 	void Movement () {
@@ -54,6 +77,10 @@ public class Player_Main : MonoBehaviour {
 
 	Vector2 GetLeftPadTouch () {
 		return ViveInput.GetPadTouchAxis (HandRole.LeftHand);
+	}
+
+	Vector2 GetRightPadTouch () {
+		return ViveInput.GetPadTouchAxis (HandRole.RightHand);
 	}
 
 	void OnDrawGizmos () {
@@ -132,13 +159,72 @@ public class Player_Main : MonoBehaviour {
 
 		if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Menu) && ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Menu)) {
 			CreateMainMenu ();
+		} else {
+			if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Menu)) {
+				ToggleRightMenu (!rightMenu.activeSelf);
+			}
+
+			if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Menu)) {
+				ToggleLeftMenu (!leftMenu.activeSelf);
+			}
+		}
+
+		if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Trigger) && rightHandItem == null) {
+			BeginRightCast ();
+		}
+
+		if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Trigger) && leftHandItem == null) {
+			BeginLeftCast ();
+		}
+
+		if (ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.Trigger) && rightHandItem == null) {
+			EndRightCast ();
+		}
+
+		if (ViveInput.GetPressUp(HandRole.LeftHand, ControllerButton.Trigger) && leftHandItem == null) {
+			EndLeftCast ();
 		}
 	}
 
+	void BeginLeftCast () {
+		leftSpell.SetActive (true);
+	}
+
+	void BeginRightCast () {
+		rightSpell.SetActive (true);
+	}
+
+	void EndLeftCast () {
+		leftSpell.SetActive (false);
+	}
+
+	void EndRightCast () {
+		rightSpell.SetActive (false);
+	}
 	void CreateMainMenu () {
 		Vector3 menuPos = mainC.transform.position + new Vector3 (mainC.transform.forward.x, 0, mainC.transform.forward.z) * 2;
-		Quaternion menuRot = Quaternion.LookRotation (menuPos - transform.position, Vector3.up);
+//		Quaternion menuRot = Quaternion.LookRotation (menuPos - transform.position, Vector3.up);
 		/*GameObject mainMenu = */
-		Instantiate (mainMenuTemplate, menuPos, menuRot)/* as GameObject*/;
+		Instantiate (mainMenuTemplate, menuPos, Quaternion.identity)/* as GameObject*/;
 	}
+
+	void ToggleLeftMenu (bool state) {
+		leftMenu.SetActive (state);
+	}
+
+	void ToggleRightMenu (bool state) {
+		rightMenu.SetActive (state);
+	}
+
+	void PlayerMenu () {
+		if (leftMenu.activeSelf) {
+			
+		}
+
+		if (rightMenu.activeSelf) {
+			
+		}
+	}
+
+
 }

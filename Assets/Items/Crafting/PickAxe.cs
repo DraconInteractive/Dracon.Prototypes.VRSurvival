@@ -52,11 +52,19 @@ public class PickAxe : Item {
 		}
 	}
 
-	void OnCollisionEnter (Collision col) {
+//	void OnCollisionEnter (Collision col) {
+//		if (equipped) {
+//			GameObject hitObj = col.gameObject;
+//			if (hitObj.tag == "Rock" && equipped) {
+//				hitObj.GetComponent<Rock> ().PickAt (Mathf.RoundToInt(pickStrength * chargeMultiplier));
+//			}
+//		}
+//	}
+
+	public override void ItemCollision (Collision col) {
 		if (equipped) {
 			GameObject hitObj = col.gameObject;
 			if (hitObj.tag == "Rock" && equipped) {
-				
 				hitObj.GetComponent<Rock> ().PickAt (Mathf.RoundToInt(pickStrength * chargeMultiplier));
 			}
 		}

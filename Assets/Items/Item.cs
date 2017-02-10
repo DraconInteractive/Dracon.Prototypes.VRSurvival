@@ -27,13 +27,12 @@ public class Item : MonoBehaviour {
 
 	public void BaseUpdate () {
 		if (equipped) {
-//			rb.MovePosition (controllerObj.transform.position);
-//			rb.MoveRotation (controllerObj.transform.rotation);
 
-			rb.MovePosition (Vector3.Lerp (transform.position, controllerObj.transform.position, 0.8f));
-			rb.MoveRotation (Quaternion.Lerp (transform.rotation, controllerObj.transform.rotation, 0.8f));
-			//			Vector3 targetVector = (controllerObj.transform.position - transform.position).normalized;
-			//			rb.MovePosition (Vector3.SmoothDamp (transform.position, targetVector, ref itemVel, 0.6f));
+//			rb.MovePosition (Vector3.Lerp (transform.position, controllerObj.transform.position, 0.8f));
+//			rb.MoveRotation (Quaternion.Lerp (transform.rotation, controllerObj.transform.rotation, 0.8f));
+			transform.position = Vector3.SmoothDamp(transform.position, controllerObj.transform.position, ref itemVel, 0.025f);
+			transform.rotation = Quaternion.Lerp (transform.rotation, controllerObj.transform.rotation, 0.8f);
+
 		} else if (initStage) {
 			transform.position = initPos;
 		}
@@ -61,5 +60,13 @@ public class Item : MonoBehaviour {
 		initStage = true;
 		initPos = transform.position;
 //		rb.isKinematic = true;
+	}
+
+	void OnCollisionEnter (Collision col) {
+		ItemCollision (col);
+	}
+
+	public virtual void ItemCollision (Collision col) {
+		
 	}
 }
