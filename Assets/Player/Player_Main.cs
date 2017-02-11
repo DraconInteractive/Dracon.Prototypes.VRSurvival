@@ -35,7 +35,9 @@ public class Player_Main : MonoBehaviour {
 
 	#region baseVar-SPELLS
 
-	public GameObject leftSpell, rightSpell;
+//	public GameObject leftSpell, rightSpell;
+	public GameObject spellTemplate;
+	GameObject lSpell, rSpell;
 	#endregion
 	//TODO Invis rendermodels when equip item, reappear when disequip;
 	void Awake () {
@@ -92,6 +94,8 @@ public class Player_Main : MonoBehaviour {
 	public void PickUpWithLeft () {
 		if (leftHandItem != null) {
 			leftHandItem.PutDown ();
+			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+			leftHandItem.rb.velocity = d.velocity;
 			leftHandItem = null;
 			leftRModel.SetActive (true);
 		} else {
@@ -121,6 +125,8 @@ public class Player_Main : MonoBehaviour {
 	public void PickUpWithRight () {
 		if (rightHandItem != null) {
 			rightHandItem.PutDown ();
+			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
+			rightHandItem.rb.velocity = d.velocity;
 			rightHandItem = null;
 			rightRModel.SetActive (true);
 		} else {
@@ -187,19 +193,21 @@ public class Player_Main : MonoBehaviour {
 	}
 
 	void BeginLeftCast () {
-		leftSpell.SetActive (true);
+//		leftSpell.SetActive (true);
+		lSpell = Instantiate (spellTemplate, leftController.transform.position, Quaternion.identity, leftController.transform);
 	}
 
 	void BeginRightCast () {
-		rightSpell.SetActive (true);
+//		rightSpell.SetActive (true);
+		rSpell = Instantiate (spellTemplate, rightController.transform.position, Quaternion.identity, rightController.transform);
 	}
 
 	void EndLeftCast () {
-		leftSpell.SetActive (false);
+		Destroy (lSpell);
 	}
 
 	void EndRightCast () {
-		rightSpell.SetActive (false);
+		Destroy (rSpell);
 	}
 	void CreateMainMenu () {
 		Vector3 menuPos = mainC.transform.position + new Vector3 (mainC.transform.forward.x, 0, mainC.transform.forward.z) * 2;

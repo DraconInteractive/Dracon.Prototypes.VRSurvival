@@ -17,6 +17,8 @@ public class Item : MonoBehaviour {
 	[HideInInspector]
 	public bool initStage;
 
+	public bool dropOnAwake;
+
 	void Awake () {
 		SetupFunc ();
 	}
@@ -48,6 +50,7 @@ public class Item : MonoBehaviour {
 	}
 
 	public virtual void PutDown () {
+		
 		initStage = false;
 		equipped = false;
 		controllerObj = null;
@@ -60,6 +63,10 @@ public class Item : MonoBehaviour {
 		initStage = true;
 		initPos = transform.position;
 //		rb.isKinematic = true;
+
+		if (dropOnAwake) {
+			PutDown ();
+		}
 	}
 
 	void OnCollisionEnter (Collision col) {
