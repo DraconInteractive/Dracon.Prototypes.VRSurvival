@@ -20,29 +20,30 @@ public class Player_Main : MonoBehaviour {
 	#endregion
 
 	#region baseVar-INV
-	//Inventory
+	[HideInInspector]
 	public int rockAmount, woodAmount;
-
+	[HideInInspector]
 	public Item leftHandItem, rightHandItem;
 	#endregion
 
 	#region baseVAR-MENU
-	//Menu's
 	public GameObject mainMenuTemplate, leftMenu, rightMenu;
-
-
 	#endregion
 
 	#region baseVar-SPELLS
-
-//	public GameObject leftSpell, rightSpell;
 	public GameObject spellTemplate;
 	GameObject lSpell, rSpell;
+	#endregion
+
+	#region baseVar-ADAPTIVE COLLISIONS
+	[HideInInspector]
+	public CapsuleCollider playerCollider;
 	#endregion
 	//TODO Invis rendermodels when equip item, reappear when disequip;
 	void Awake () {
 		player = GetComponent<Player_Main> ();
 		rb = GetComponent<Rigidbody> ();
+		playerCollider = GetComponent<CapsuleCollider> ();
 		mainC = Camera.main;
 	}
 
@@ -56,6 +57,10 @@ public class Player_Main : MonoBehaviour {
 	void Update () {
 		P_Input ();
 		PlayerMenu ();
+		playerCollider.center = mainC.transform.position/* - Vector3.up * 1.4f*/;
+//		if (!Physics.Raycast(mainC.transform.position, Vector3.down)) {
+//			transform.Translate (Vector3.up * Time.deltaTime);
+//		}
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -95,7 +100,7 @@ public class Player_Main : MonoBehaviour {
 		if (leftHandItem != null) {
 			leftHandItem.PutDown ();
 			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
-			leftHandItem.rb.velocity = d.velocity;
+			leftHandItem.rb.velocity = d.velocity * 1.2f;
 			leftHandItem = null;
 			leftRModel.SetActive (true);
 		} else {
@@ -115,6 +120,7 @@ public class Player_Main : MonoBehaviour {
 					c[i].GetComponent<Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
 					leftHandItem = c [i].GetComponent<Item> ();
 					leftRModel.SetActive (false);
+					break;
 				}
 			}
 
@@ -126,7 +132,7 @@ public class Player_Main : MonoBehaviour {
 		if (rightHandItem != null) {
 			rightHandItem.PutDown ();
 			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
-			rightHandItem.rb.velocity = d.velocity;
+			rightHandItem.rb.velocity = d.velocity * 1.2f;
 			rightHandItem = null;
 			rightRModel.SetActive (true);
 		} else {

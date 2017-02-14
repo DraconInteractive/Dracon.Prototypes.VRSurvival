@@ -5,7 +5,7 @@ using UnityEngine;
 public class Flammable : MonoBehaviour {
 
 	public ParticleSystem ps;
-
+	public GameObject fLight;
 	public bool ignited, igniteOnAwake;
 	// Use this for initialization
 	void Start () {
@@ -32,11 +32,13 @@ public class Flammable : MonoBehaviour {
 
 	public void Ignite () {
 		ps.Play ();
+		fLight.SetActive (true);
 		ignited = true;
 	}
 
 	public void Extinguish () {
 		ps.Stop ();
+		fLight.SetActive (false);
 		ignited = false;
 	}
 }
