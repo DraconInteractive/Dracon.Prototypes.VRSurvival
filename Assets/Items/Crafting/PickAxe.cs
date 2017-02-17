@@ -21,6 +21,8 @@ public class PickAxe : Item {
 		}
 	}
 
+	float hitTimer, htTarget = 1;
+
 //	PickAxe thisAxe;
 	Renderer render; 
 
@@ -31,6 +33,7 @@ public class PickAxe : Item {
 
 	void Start () {
 		currentCharge = maxCharge;
+		htTarget = 1;
 	}
 
 	void Update () {
@@ -50,6 +53,10 @@ public class PickAxe : Item {
 				EndBoost ();
 			}
 		}
+
+		if (hitTimer <= htTarget) {
+			htTarget += Time.deltaTime;
+		}
 	}
 
 //	void OnCollisionEnter (Collision col) {
@@ -64,7 +71,8 @@ public class PickAxe : Item {
 	public override void ItemCollision (Collision col) {
 		if (equipped) {
 			GameObject hitObj = col.gameObject;
-			if (hitObj.tag == "Rock" && equipped) {
+			if (hitObj.tag == "Rock" && equipped && hitTimer >= htTarget) {
+				hitTimer = 0;
 				hitObj.GetComponent<Rock> ().PickAt (Mathf.RoundToInt(pickStrength * chargeMultiplier));
 			}
 		}

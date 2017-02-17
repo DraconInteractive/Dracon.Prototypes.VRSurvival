@@ -19,8 +19,11 @@ public class Anvil : MonoBehaviour {
 	public Button m_leftArrow, m_rightArrow, c_menuToggle;
 	public Text m_Item;
 
+	AudioSource mainAudio;
+	public AudioClip anvilHit, anvilCreate;
 	void Awake () {
 		ps = GetComponentInChildren<ParticleSystem> ();
+		mainAudio = GetComponent<AudioSource> ();
 		m_leftArrow.onClick.AddListener (() => M_LeftArrow ());
 		m_rightArrow.onClick.AddListener (() => M_RightArrow ());
 		c_menuToggle.onClick.AddListener (() => ToggleAnvilMenu ());
@@ -48,6 +51,7 @@ public class Anvil : MonoBehaviour {
 		if (timer >= 1) {
 			ps.Play ();
 			Progress ();
+
 			timer = 0;
 		}
 	}
@@ -58,9 +62,13 @@ public class Anvil : MonoBehaviour {
 
 	void Progress () {
 		craftProgress += 10;
+
 		if (craftProgress >= 100) {
 			Craft (objTemplate[currentSelection]);
 			craftProgress = 0;
+			mainAudio.PlayOneShot (anvilCreate);
+		} else {
+			mainAudio.PlayOneShot (anvilHit);
 		}
 	}
 

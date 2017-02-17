@@ -36,14 +36,19 @@ public class Player_Main : MonoBehaviour {
 	#endregion
 
 	#region baseVar-ADAPTIVE COLLISIONS
-	[HideInInspector]
-	public CapsuleCollider playerCollider;
+//	[HideInInspector]
+//	public CapsuleCollider playerCollider;
 	#endregion
+
+	#region baseVar-SOUND
+	public AudioSource mainAS;
+	#endregion
+
 	//TODO Invis rendermodels when equip item, reappear when disequip;
 	void Awake () {
 		player = GetComponent<Player_Main> ();
 		rb = GetComponent<Rigidbody> ();
-		playerCollider = GetComponent<CapsuleCollider> ();
+//		playerCollider = GetComponent<CapsuleCollider> ();
 		mainC = Camera.main;
 	}
 
@@ -57,7 +62,8 @@ public class Player_Main : MonoBehaviour {
 	void Update () {
 		P_Input ();
 		PlayerMenu ();
-		playerCollider.center = mainC.transform.position/* - Vector3.up * 1.4f*/;
+		GazeUpdate ();
+//		playerCollider.center = mainC.transform.position/* - Vector3.up * 1.4f*/;
 //		if (!Physics.Raycast(mainC.transform.position, Vector3.down)) {
 //			transform.Translate (Vector3.up * Time.deltaTime);
 //		}
@@ -67,7 +73,6 @@ public class Player_Main : MonoBehaviour {
 		if (!leftMenu.activeSelf) {
 			Movement ();
 		}
-
 	}
 
 	void Movement () {
@@ -82,6 +87,19 @@ public class Player_Main : MonoBehaviour {
 		}
 	}
 
+	void GazeUpdate () {
+		RaycastHit hit;
+		Ray ray = new Ray (mainC.transform.position, mainC.transform.forward);
+
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+			if (hit.collider.tag == "NPC") {
+				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
+				npc.gazeTrigger = true;
+			}
+				
+		}
+	}
+
 	Vector2 GetLeftPadTouch () {
 		return ViveInput.GetPadTouchAxis (HandRole.LeftHand);
 	}
@@ -92,8 +110,8 @@ public class Player_Main : MonoBehaviour {
 
 	void OnDrawGizmos () {
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere (leftController.transform.position, 0.2f);
-		Gizmos.DrawWireSphere (rightController.transform.position, 0.2f);
+		Gizmos.DrawWireSphere (leftController.transform.position, 0.1f);
+		Gizmos.DrawWireSphere (rightController.transform.position, 0.1f);
 	}
 
 	public void PickUpWithLeft () {
@@ -152,6 +170,7 @@ public class Player_Main : MonoBehaviour {
 
 					rightHandItem = it;
 					rightRModel.SetActive (false);
+					break;
 				}
 			}
 		}
@@ -200,20 +219,24 @@ public class Player_Main : MonoBehaviour {
 
 	void BeginLeftCast () {
 //		leftSpell.SetActive (true);
-		lSpell = Instantiate (spellTemplate, leftController.transform.position, Quaternion.identity, leftController.transform);
+		lSpell = Instantiate (spellTemplate, leftController.transform.position + leftController.transform.forward * 0.075f - leftController.transform.up * 0.05f, Quaternion.identity, leftController.transform);
+		leftRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
 
 	void BeginRightCast () {
 //		rightSpell.SetActive (true);
-		rSpell = Instantiate (spellTemplate, rightController.transform.position, Quaternion.identity, rightController.transform);
+		rSpell = Instantiate (spellTemplate, rightController.transform.position + rightController.transform.forward * 0.075f - rightController.transform.up * 0.05f, Quaternion.identity, rightController.transform);
+		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
 
 	void EndLeftCast () {
 		Destroy (lSpell);
+		leftRModel.GetComponent<Animator> ().SetBool ("pointing", false);
 	}
 
 	void EndRightCast () {
 		Destroy (rSpell);
+		rightRModel.GetComponent<Animator> ().SetBool ("pointing", false);
 	}
 	void CreateMainMenu () {
 		Vector3 menuPos = mainC.transform.position + new Vector3 (mainC.transform.forward.x, 0, mainC.transform.forward.z) * 2;
