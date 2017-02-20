@@ -15,6 +15,8 @@ public class Door : MonoBehaviour {
 	Player_Main player;
 
 	public bool doorCurrentlyOpen;
+
+	Coroutine movementRoutine;
 	// Use this for initialization
 	void Start () {
 		initPos = transform.position;
@@ -29,7 +31,7 @@ public class Door : MonoBehaviour {
 	IEnumerator OpenDoor () {
 		doorCurrentlyOpen = true;
 		Vector3 targetPos = initPos + Vector3.up * yOffset;
-		while (transform.position != targetPos) {
+		while (Vector3.Distance (transform.position, targetPos) > 0.1f) {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
 			yield return null;
 		}
@@ -39,7 +41,7 @@ public class Door : MonoBehaviour {
 	IEnumerator CloseDoor () {
 		doorCurrentlyOpen = false;
 		Vector3 targetPos = initPos;
-		while (transform.position != targetPos) {
+		while (Vector3.Distance (transform.position, targetPos) > 0.1f) {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
 			yield return null;
 		}
@@ -49,12 +51,18 @@ public class Door : MonoBehaviour {
 	public void ToggleDoorState (bool open) {
 		if (open) {
 			if (!doorCurrentlyOpen) {
-				StopCoroutine ("CloseDoor");
-				StartCoroutine (OpenDoor ());
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+					movementRoutine = null;
+				}
+				movementRoutine = StartCoroutine (OpenDoor ());
 			}
 		} else {
 			if (doorCurrentlyOpen) {
-				StopCoroutine ("OpenDoor");
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+					movementRoutine = null;
+				}
 				StartCoroutine (CloseDoor ());
 			}
 		}
