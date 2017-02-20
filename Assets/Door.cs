@@ -20,10 +20,22 @@ public class Door : MonoBehaviour {
 	}
 	
 	IEnumerator OpenDoor () {
+		Vector3 targetPos = initPos + Vector3.up * yOffset;
+		while (transform.position != targetPos) {
+			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);
+			yield return null;
+		}
+		movementRoutine = null;
 		yield break;
 	}
 
 	IEnumerator CloseDoor () {
+		Vector3 targetPos = initPos;
+		while (transform.position != targetPos) {
+			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);
+			yield return null;
+		}
+		movementRoutine = null;
 		yield break;
 	}
 
