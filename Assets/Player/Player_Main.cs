@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using HTC.UnityPlugin.Vive;
+using CurvedUI;
 
 
 public class Player_Main : MonoBehaviour {
@@ -53,6 +54,8 @@ public class Player_Main : MonoBehaviour {
 	public Sprite returnImg, testImg;
 
 	public Image topLeftImg, topRightImg;
+
+	public GameObject leftCanvas, rightCanvas;
 	#endregion
 
 	#region Standard Functions
@@ -229,8 +232,11 @@ public class Player_Main : MonoBehaviour {
 				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
 				npc.gazeTrigger = true;
 			}
-
 		}
+
+		List<GameObject> myObjectsUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
+		List<GameObject> myObjectsUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
+
 	}
            
 	#endregion
@@ -307,32 +313,28 @@ public class Player_Main : MonoBehaviour {
 	void PlayerMenu () {
 		//Manager of Wrist Menu's
 		if (leftMenu.activeSelf) {
-			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.LeftHand);
-			if (padPress.y > 0.1f) {
-				if (leftHandItem != null) {
-					leftHandItem.ReturnToInventory ();
-				} else {
-					//TODO add instantiation of item prefab
-
-				}
-
-			} else if (padPress.y < 0.1f) {
-				ToggleLeftMenu (false);
-			}
+//			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.LeftHand);
+//			if (padPress.y > 0.1f) {
+//				if (leftHandItem != null) {
+//					leftHandItem.ReturnToInventory ();
+//				} 
+//			} else if (padPress.y < 0.1f) {
+//				ToggleLeftMenu (false);
+//			}
 		}
 
 		if (rightMenu.activeSelf) {
-			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.RightHand);
-			if (padPress.y > 0.1f) {
-				if (rightHandItem != null) {
-					rightHandItem.ReturnToInventory ();
-				} else {
-					//TODO add instantiation of item prefab
-				}
-
-			} else if (padPress.y < 0.1f) {
-				ToggleRightMenu (false);
-			}
+//			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.RightHand);
+//			if (padPress.y > 0.1f) {
+//				if (rightHandItem != null) {
+//					rightHandItem.ReturnToInventory ();
+//				} else {
+//					//TODO add instantiation of item prefab
+//				}
+//
+//			} else if (padPress.y < 0.1f) {
+//				ToggleRightMenu (false);
+//			}
 		}
 	}
 	#endregion
