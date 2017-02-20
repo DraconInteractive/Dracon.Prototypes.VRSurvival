@@ -236,41 +236,14 @@ public class Player_Main : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 			string t = hit.collider.tag;
 			GameObject hitObj = hit.collider.gameObject;
+//			print ("Item Name: " + hitObj.name + " Item Tag: " + t);
 			if (t == "NPC") {
 				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
 				npc.gazeTrigger = true;
-			} else if (t == "HandMenuL") {
-				Button b = hitObj.GetComponent<Button> ();
-				b.Select ();
-//				EventSystem.current.SetSelectedGameObject (hitObj);
-				if (lastGaze == hitObj) {
-					gazeTimer += Time.deltaTime;
-					if (gazeTimer >= 1) {
-						gazeTimer = 0;
-						ReturnToInventory (HandRole.LeftHand, leftHandItem);
-					}
-				} else {
-					gazeTimer = 0;
-					lastGaze = hitObj;
-				}
-			} else if (t == "HandMenuR") {
-				
-				Button b = hitObj.GetComponent<Button> ();
-				b.Select ();
-				if (lastGaze == hitObj) {
-					gazeTimer += Time.deltaTime;
-					if (gazeTimer >= 1) {
-						gazeTimer = 0;
-						ReturnToInventory (HandRole.RightHand, rightHandItem);
-					}
-				} else {
-					gazeTimer = 0;
-					lastGaze = hitObj;
-				}
-			}
-		} else {
-			gazeTimer = 0;
+			} 
 		}
+
+//		EventSystem.current.gameObject.GetComponent<CurvedUIInputModule>().get
 
 	}
          

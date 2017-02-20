@@ -58,12 +58,12 @@ public class NPC : MonoBehaviour {
 
 	public void BeginInteraction () {
 		interacting = true;
-		print ("Begun Interaction");
+//		print ("Begun Interaction");
 //		Invoke ("EndInteraction", 3);
 	}
 
 	public void EndInteraction () {
-		print ("Ending Interaction");
+//		print ("Ending Interaction");
 		interacting = false;
 	}
 }
