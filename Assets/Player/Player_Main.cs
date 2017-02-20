@@ -247,7 +247,7 @@ public class Player_Main : MonoBehaviour {
 					gazeTimer += Time.deltaTime;
 					if (gazeTimer >= 1) {
 						gazeTimer = 0;
-//						ReturnToInventory (HandRole.LeftHand, leftHandItem);
+						ReturnToInventory (HandRole.LeftHand, leftHandItem);
 					}
 				} else {
 					gazeTimer = 0;
@@ -261,7 +261,7 @@ public class Player_Main : MonoBehaviour {
 					gazeTimer += Time.deltaTime;
 					if (gazeTimer >= 1) {
 						gazeTimer = 0;
-//						ReturnToInventory (HandRole.RightHand, rightHandItem);
+						ReturnToInventory (HandRole.RightHand, rightHandItem);
 					}
 				} else {
 					gazeTimer = 0;
@@ -273,7 +273,57 @@ public class Player_Main : MonoBehaviour {
 		}
 
 	}
-           
+         
+	void ReturnToInventory (HandRole hand, Physics_Item i) {
+
+		switch (hand)
+		{
+		case HandRole.LeftHand:
+			if (leftHandItem == null) {
+				break;
+			}
+			switch (i.itemType)
+			{
+			case Physics_Item.ItemType.Melee:
+				if (playerMelee_INV != null) {
+					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerMelee_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			case Physics_Item.ItemType.Ranged:
+				if (playerRanged_INV != null) {
+					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerRanged_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			}
+			break;
+		case HandRole.RightHand:
+			if (rightHandItem == null) {
+				break;
+			}
+			switch (i.itemType)
+			{
+			case Physics_Item.ItemType.Melee:
+				if (playerMelee_INV != null) {
+					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerMelee_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			case Physics_Item.ItemType.Ranged:
+				if (playerRanged_INV != null) {
+					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerRanged_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			}
+			break;
+		}
+	}
 	#endregion
 
 	#region Magic Functions
