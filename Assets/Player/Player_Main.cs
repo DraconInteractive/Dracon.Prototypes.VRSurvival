@@ -27,7 +27,7 @@ public class Player_Main : MonoBehaviour {
 	[HideInInspector]
 	public Item leftHandItem, rightHandItem;
 	[HideInInspector]
-	public GameObject playerMelee_INV, playerRanged_INV;
+	public Item playerMelee_INV, playerRanged_INV;
 	#endregion
 
 	#region baseVAR-MENU
@@ -60,11 +60,14 @@ public class Player_Main : MonoBehaviour {
 	List<GameObject> lastLeftC = new List<GameObject>();
 	List<GameObject> lastRightC = new List<GameObject>();
 	float lCTimer, rCTimer;
+<<<<<<< HEAD
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
 	float gazeTimer;
 	GameObject lastGaze;
+=======
+>>>>>>> origin/master
 	#endregion
 
 	#region Standard Functions
@@ -74,9 +77,6 @@ public class Player_Main : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 //		playerCollider = GetComponent<CapsuleCollider> ();
 		mainC = Camera.main;
-
-		returnToInvButtonL.onClick.AddListener (() => ReturnToInventory (HandRole.LeftHand, leftHandItem));
-		returnToINVButtonR.onClick.AddListener (() => ReturnToInventory (HandRole.RightHand, rightHandItem));
 	}
 
 	void Start () {
@@ -314,51 +314,6 @@ public class Player_Main : MonoBehaviour {
 //		}
 	}
            
-	void ReturnToInventory (HandRole hand, Item i) {
-		if (hand == HandRole.LeftHand) {
-			switch (i.itemType) {
-			case Item.ItemType.Melee:
-				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV.GetComponent<Item>().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
-					g.GetComponent<Item> ().dropOnAwake = true;
-				}
-				playerMelee_INV = i.itemPrefab;
-				Destroy (i.gameObject);
-				break;
-			case Item.ItemType.Ranged:
-				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV.GetComponent<Item>().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
-					g.GetComponent<Item> ().dropOnAwake = true;
-				}
-				playerRanged_INV = i.itemPrefab;
-				Destroy (i.gameObject);
-				break;
-			case Item.ItemType.Tool:
-				break;
-			}
-		} else if (hand == HandRole.RightHand) {
-			switch (i.itemType) {
-			case Item.ItemType.Melee:
-				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV.GetComponent<Item>().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
-					g.GetComponent<Item> ().dropOnAwake = true;
-				}
-				playerMelee_INV = i.itemPrefab;
-				Destroy (i.gameObject);
-				break;
-			case Item.ItemType.Ranged:
-				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV.GetComponent<Item>().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
-					g.GetComponent<Item> ().dropOnAwake = true;
-				}
-				playerRanged_INV = i.itemPrefab;
-				Destroy (i.gameObject);
-				break;
-			case Item.ItemType.Tool:
-				break;
-			}
-		}
-	}
 	#endregion
 
 	#region Magic Functions
@@ -414,10 +369,20 @@ public class Player_Main : MonoBehaviour {
 
 	void ToggleLeftMenu (bool state) {
 		leftMenu.SetActive (state);
+		if (leftHandItem != null) {
+			topLeftImg.sprite = returnImg;
+		} else {
+			topLeftImg.sprite = testImg;
+		}
 	}
 
 	void ToggleRightMenu (bool state) {
 		rightMenu.SetActive (state);
+		if (rightHandItem != null) {
+			topRightImg.sprite = returnImg;
+		} else {
+			topRightImg.sprite = testImg;
+		}
 	}
 
 	void PlayerMenu () {

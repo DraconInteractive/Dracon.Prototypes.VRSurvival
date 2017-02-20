@@ -62,6 +62,19 @@ public class Item : MonoBehaviour {
 		equippedHand = handType;
 		rb.useGravity = false;
 
+		switch (itemType) 
+		{
+		case ItemType.Melee:
+			if (player.playerMelee_INV == null) {
+				player.playerMelee_INV = GetComponent<Item> ();
+			}
+			break;
+		case ItemType.Ranged:
+			if (player.playerRanged_INV == null) {
+				player.playerRanged_INV = GetComponent<Item> ();
+			}
+			break;
+		}
 		print (name + " picked up");
 	}
 
@@ -85,19 +98,27 @@ public class Item : MonoBehaviour {
 		}
 	}
 
-//	public virtual void ReturnToInventory () {
-//		switch (itemType) 
-//		{
-//		case ItemType.Melee:
-//			player.playerMelee_INV = GetComponent<Item> ();
-//			break;
-//		case ItemType.Ranged:
-//			player.playerRanged_INV = GetComponent<Item> ();
-//			break;
-//		}
-//
-//		Destroy (this.gameObject);
-//	}
+	public virtual void ReturnToInventory () {
+		switch (itemType) 
+		{
+		case ItemType.Melee:
+			player.playerMelee_INV = GetComponent<Item> ();
+			break;
+		case ItemType.Ranged:
+			player.playerRanged_INV = GetComponent<Item> ();
+			break;
+		}
+
+		Destroy (this.gameObject);
+
+		//TODO this wont work. Its storing a reference not a copy. 
+		//Gotta see if I can direct it to a prefab type, etc. 
+
+		//IDEA. The item stores a prefab of itself and the player grabs this. 
+		//IDEA 2, The item doesnt destroy, just deactivates
+		//IDEA 3, the item doesnt deactivate, just holsters, Raw Data style. 
+		//IDEA 3 cont., Make sure to turn off colliders etc for it when holstered. 
+	}
 
 	public void SetupFunc () {
 		rb = GetComponent<Rigidbody> ();

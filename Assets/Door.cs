@@ -11,63 +11,25 @@ public class Door : MonoBehaviour {
 	Vector3 initPos;
 
 	Vector3 doorVel;
-
-	Player_Main player;
-
-	public bool doorCurrentlyOpen;
-
-	Coroutine movementRoutine;
 	// Use this for initialization
 	void Start () {
 		initPos = transform.position;
-		player = Player_Main.player;
 	}
-
-	void OnDrawGizmos () {
-		Gizmos.color = Color.blue;
-		Gizmos.DrawWireCube (transform.position + Vector3.up * yOffset, Vector3.one * 0.1f);
-	}
-
-	IEnumerator OpenDoor () {
-		doorCurrentlyOpen = true;
-		Vector3 targetPos = initPos + Vector3.up * yOffset;
-		while (Vector3.Distance (transform.position, targetPos) > 0.1f) {
-			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
-			yield return null;
-		}
-		yield break;
-	}
-
-	IEnumerator CloseDoor () {
-		doorCurrentlyOpen = false;
-		Vector3 targetPos = initPos;
-		while (Vector3.Distance (transform.position, targetPos) > 0.1f) {
-			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
-			yield return null;
-		}
-		yield break;
-	}
-
-	public void ToggleDoorState (bool open) {
-		if (open) {
-			if (!doorCurrentlyOpen) {
-				if (movementRoutine != null) {
-					StopCoroutine (movementRoutine);
-					movementRoutine = null;
-				}
-				movementRoutine = StartCoroutine (OpenDoor ());
-			}
+	
+	// Update is called once per frame
+	void Update () {
+		if (CheckPlayerDist()) {
+			transform.position = Vector3.SmoothDamp(transform.position, initPos + Vector3.up * yOffset, ref doorVel, 0.1f);
 		} else {
-			if (doorCurrentlyOpen) {
-				if (movementRoutine != null) {
-					StopCoroutine (movementRoutine);
-					movementRoutine = null;
-				}
-				StartCoroutine (CloseDoor ());
-			}
+			transform.position = Vector3.SmoothDamp(transform.position, initPos, ref doorVel, 0.1f);
 		}
 	}
 
+	bool CheckPlayerDist () {
+		if (Vector3.Distance(Camera.main.transform.position, transform.position) < activationDistance) {
+			return true;
+		}	
 
-
+		return false;
+	}
 }
