@@ -25,7 +25,7 @@ public class Player_Main : MonoBehaviour {
 	[HideInInspector]
 	public int rockAmount, woodAmount;
 	[HideInInspector]
-	public Physics_Item leftHandItem, rightHandItem;
+	public Base_Item leftHandItem, rightHandItem;
 	[HideInInspector]
 	public Physics_Item playerMelee_INV, playerRanged_INV;
 	#endregion
@@ -126,11 +126,16 @@ public class Player_Main : MonoBehaviour {
 	#endregion
 
 	#region Interaction Functions
+
+    // TODO: For you own mental safety and sanity. Fix this shit peter. - Tom. 21-2-17.
 	public void PickUpWithLeft () {
 		if (leftHandItem != null) {
 			leftHandItem.PutDown ();
 			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
-			leftHandItem.rb.velocity = d.velocity * 1.2f;
+
+            if (leftHandItem is Physics_Item)
+                (leftHandItem as Physics_Item).rb.velocity = d.velocity * 1.2f;
+
 			leftHandItem = null;
 			leftRModel.SetActive (true);
 		} else {
@@ -138,7 +143,7 @@ public class Player_Main : MonoBehaviour {
 			for (int i = 0; i < c.Length; i++) {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
-					Physics_Item it = c [i].GetComponent<Physics_Item> ();
+					Base_Item it = c [i].GetComponent<Base_Item> ();
 					if (it.equipped && it.equippedHand == HandRole.RightHand) {
 						it.PutDown ();
 						rightHandItem = null;
@@ -147,8 +152,8 @@ public class Player_Main : MonoBehaviour {
 					} else {
 						it.PickUp (rightController.gameObject, HandRole.LeftHand);
 					}
-					c[i].GetComponent<Physics_Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
-					leftHandItem = c [i].GetComponent<Physics_Item> ();
+					c[i].GetComponent<Base_Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
+					leftHandItem = c [i].GetComponent<Base_Item> ();
 					leftRModel.SetActive (false);
 					break;
 				}
@@ -162,7 +167,10 @@ public class Player_Main : MonoBehaviour {
 		if (rightHandItem != null) {
 			rightHandItem.PutDown ();
 			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
-			rightHandItem.rb.velocity = d.velocity * 1.2f;
+
+            if(rightHandItem is Physics_Item)
+                (rightHandItem as Physics_Item).rb.velocity = d.velocity * 1.2f;
+
 			rightHandItem = null;
 			rightRModel.SetActive (true);
 		} else {
@@ -170,7 +178,7 @@ public class Player_Main : MonoBehaviour {
 			for (int i = 0; i < c.Length; i++) {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
-					Physics_Item it = c[i].GetComponent<Physics_Item>();
+                    Base_Item it = c[i].GetComponent<Base_Item>();
 					if (it.equipped && it.equippedHand == HandRole.LeftHand) {
 						it.PutDown ();
 						leftHandItem = null;

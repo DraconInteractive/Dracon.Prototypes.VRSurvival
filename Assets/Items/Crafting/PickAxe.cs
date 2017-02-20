@@ -24,21 +24,29 @@ public class PickAxe : Physics_Item {
 	float hitTimer, htTarget = 1;
 
 //	PickAxe thisAxe;
-	Renderer render; 
+	Renderer render;
 
-	void Awake () {
-		render = GetComponentInChildren<Renderer> ();
+    internal override void Awake()
+    {
+        base.Awake();
+        render = GetComponentInChildren<Renderer>();
+    }
+
+    /*void Awake () {
 		SetupFunc ();
-	}
+	}*/
 
-	void Start () {
-		BaseStart ();
-		currentCharge = maxCharge;
+	internal override void Start () {
+        base.Start();
+        //BaseStart ();
+
+        currentCharge = maxCharge;
 		htTarget = 1;
 	}
 
-	void Update () {
-		BaseUpdate ();
+	internal override void Update () {
+        base.Update();
+		//BaseUpdate ();
 
 		if (boostActive && currentCharge > 0) {
 			chargeMultiplier = 2;
