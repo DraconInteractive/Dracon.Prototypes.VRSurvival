@@ -21,6 +21,11 @@ public class Door : MonoBehaviour {
 		player = Player_Main.player;
 	}
 
+	void OnDrawGizmos () {
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireCube (transform.position + Vector3.up * yOffset, Vector3.one * 0.1f);
+	}
+
 	IEnumerator OpenDoor () {
 		doorCurrentlyOpen = true;
 		Vector3 targetPos = initPos + Vector3.up * yOffset;
