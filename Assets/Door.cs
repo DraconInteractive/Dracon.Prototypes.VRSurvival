@@ -8,14 +8,11 @@ public class Door : MonoBehaviour {
 
 	public float yOffset;
 
-	Player_Main player;
-
 	Vector3 initPos;
 
 	Vector3 doorVel;
 	// Use this for initialization
 	void Start () {
-		player = Player_Main.player;
 		initPos = transform.position;
 	}
 	
@@ -29,7 +26,7 @@ public class Door : MonoBehaviour {
 	}
 
 	bool CheckPlayerDist () {
-		if (Vector3.Distance(player.transform.position, transform.position) < activationDistance) {
+		if (Vector3.Distance(Camera.main.transform.position, transform.position) < activationDistance) {
 			return true;
 		}	
 
