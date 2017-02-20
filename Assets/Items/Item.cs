@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HTC.UnityPlugin.Vive;
 
-public class Item : MonoBehaviour {
+public class Item : Base_Item {
 	public bool equipped;
 	[HideInInspector]
 	public GameObject controllerObj;
