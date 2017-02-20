@@ -9,12 +9,14 @@ public class AngrySlingshot : Item {
     public AudioClip pull;
     public AudioClip fire;
 
-    public 
+    public Transform graphic;
+    public Transform sling;
 
     AudioSource sound;
-	// Use this for initialization
+
 	void Start () {
         sound = GetComponent<AudioSource>();
+        BaseStart();
 	}
 
 	void Update () {

@@ -7,11 +7,21 @@ ModelImporter:
   fileIDToRecycleName:
     100000: //RootNode
     100002: default
+    100004: Band_Plane
+    100006: Fork_Circle
     400000: //RootNode
     400002: default
+    400004: Band_Plane
+    400006: Fork_Circle
     2300000: default
+    2300002: Band_Plane
+    2300004: Fork_Circle
     3300000: default
+    3300002: Band_Plane
+    3300004: Fork_Circle
     4300000: default
+    4300002: Band_Plane
+    4300004: Fork_Circle
   materials:
     importMaterials: 0
     materialName: 0
