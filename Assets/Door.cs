@@ -11,25 +11,50 @@ public class Door : MonoBehaviour {
 	Vector3 initPos;
 
 	Vector3 doorVel;
+
+	Player_Main player;
+
+	public bool doorCurrentlyOpen;
 	// Use this for initialization
 	void Start () {
 		initPos = transform.position;
+		player = Player_Main.player;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (CheckPlayerDist()) {
-			transform.position = Vector3.SmoothDamp(transform.position, initPos + Vector3.up * yOffset, ref doorVel, 0.1f);
+
+	IEnumerator OpenDoor () {
+		doorCurrentlyOpen = true;
+		Vector3 targetPos = initPos + Vector3.up * yOffset;
+		while (transform.position != targetPos) {
+			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
+			yield return null;
+		}
+		yield break;
+	}
+
+	IEnumerator CloseDoor () {
+		doorCurrentlyOpen = false;
+		Vector3 targetPos = initPos;
+		while (transform.position != targetPos) {
+			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.5f);
+			yield return null;
+		}
+		yield break;
+	}
+
+	public void ToggleDoorState (bool open) {
+		if (open) {
+			if (!doorCurrentlyOpen) {
+				StopCoroutine ("CloseDoor");
+				StartCoroutine (OpenDoor ());
+			}
 		} else {
-			transform.position = Vector3.SmoothDamp(transform.position, initPos, ref doorVel, 0.1f);
+			if (doorCurrentlyOpen) {
+				StopCoroutine ("OpenDoor");
+				StartCoroutine (CloseDoor ());
+			}
 		}
 	}
 
-	bool CheckPlayerDist () {
-		if (Vector3.Distance(Camera.main.transform.position, transform.position) < activationDistance) {
-			return true;
-		}	
 
-		return false;
-	}
+
 }
