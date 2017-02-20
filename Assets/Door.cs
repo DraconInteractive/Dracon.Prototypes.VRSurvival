@@ -20,6 +20,7 @@ public class Door : MonoBehaviour {
 	}
 	
 	IEnumerator OpenDoor () {
+		doorOpen = true;
 		Vector3 targetPos = initPos + Vector3.up * yOffset;
 		while (transform.position != targetPos) {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);
@@ -30,6 +31,7 @@ public class Door : MonoBehaviour {
 	}
 
 	IEnumerator CloseDoor () {
+		doorOpen = false;
 		Vector3 targetPos = initPos;
 		while (transform.position != targetPos) {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);

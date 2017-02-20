@@ -27,7 +27,7 @@ public class Player_Main : MonoBehaviour {
 	[HideInInspector]
 	public Physics_Item leftHandItem, rightHandItem;
 	[HideInInspector]
-	public Physics_Item playerMelee_INV, playerRanged_INV;
+	public GameObject playerMelee_INV, playerRanged_INV;
 	#endregion
 
 	#region baseVAR-MENU
@@ -57,9 +57,9 @@ public class Player_Main : MonoBehaviour {
 	public Image topLeftImg, topRightImg;
 
 	public GameObject leftCanvas, rightCanvas;
-	List<GameObject> lastLeftC = new List<GameObject>();
-	List<GameObject> lastRightC = new List<GameObject>();
-	float lCTimer, rCTimer;
+//	List<GameObject> lastLeftC = new List<GameObject>();
+//	List<GameObject> lastRightC = new List<GameObject>();
+//	float lCTimer, rCTimer;
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
