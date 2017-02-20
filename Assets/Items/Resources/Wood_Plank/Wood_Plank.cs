@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wood_Plank : Item {
+public class Wood_Plank : Physics_Item {
 
 	public int stackSize;
 

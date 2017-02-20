@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using HTC.UnityPlugin.Vive;
 
-public class Item : Base_Item {
+public class Physics_Item : Base_Item {
 	public bool equipped;
 	[HideInInspector]
 	public GameObject controllerObj;
@@ -66,12 +66,12 @@ public class Item : Base_Item {
 		{
 		case ItemType.Melee:
 			if (player.playerMelee_INV == null) {
-				player.playerMelee_INV = GetComponent<Item> ();
+				player.playerMelee_INV = GetComponent<Physics_Item> ();
 			}
 			break;
 		case ItemType.Ranged:
 			if (player.playerRanged_INV == null) {
-				player.playerRanged_INV = GetComponent<Item> ();
+				player.playerRanged_INV = GetComponent<Physics_Item> ();
 			}
 			break;
 		}
@@ -86,12 +86,12 @@ public class Item : Base_Item {
 		switch (itemType) 
 		{
 		case ItemType.Melee:
-			if (player.playerMelee_INV == GetComponent<Item> ()) {
+			if (player.playerMelee_INV == GetComponent<Physics_Item> ()) {
 				player.playerMelee_INV = null;
 			}
 			break;
 		case ItemType.Ranged:
-			if (player.playerRanged_INV == GetComponent<Item> ()) {
+			if (player.playerRanged_INV == GetComponent<Physics_Item> ()) {
 				player.playerRanged_INV = null;
 			}
 			break;
@@ -102,10 +102,10 @@ public class Item : Base_Item {
 		switch (itemType) 
 		{
 		case ItemType.Melee:
-			player.playerMelee_INV = GetComponent<Item> ();
+			player.playerMelee_INV = GetComponent<Physics_Item> ();
 			break;
 		case ItemType.Ranged:
-			player.playerRanged_INV = GetComponent<Item> ();
+			player.playerRanged_INV = GetComponent<Physics_Item> ();
 			break;
 		}
 

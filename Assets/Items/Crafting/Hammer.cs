@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hammer : Item {
+public class Hammer : Physics_Item {
 
 	void OnCollisionEnter (Collision col) {
 		if (equipped && col.gameObject.tag == "AnvilPiece") {

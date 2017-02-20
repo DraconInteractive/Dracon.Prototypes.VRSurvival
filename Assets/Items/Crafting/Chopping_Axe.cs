@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chopping_Axe : Item {
+public class Chopping_Axe : Physics_Item {
 
 	public GameObject smoke;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using HTC.UnityPlugin.Vive;
 
 
-public class PickAxe : Item {
+public class PickAxe : Physics_Item {
 	public int pickStrength;
 	private bool pickedUp;
 

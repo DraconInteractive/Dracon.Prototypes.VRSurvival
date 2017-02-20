@@ -25,9 +25,9 @@ public class Player_Main : MonoBehaviour {
 	[HideInInspector]
 	public int rockAmount, woodAmount;
 	[HideInInspector]
-	public Item leftHandItem, rightHandItem;
+	public Physics_Item leftHandItem, rightHandItem;
 	[HideInInspector]
-	public Item playerMelee_INV, playerRanged_INV;
+	public Physics_Item playerMelee_INV, playerRanged_INV;
 	#endregion
 
 	#region baseVAR-MENU
@@ -138,7 +138,7 @@ public class Player_Main : MonoBehaviour {
 			for (int i = 0; i < c.Length; i++) {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
-					Item it = c [i].GetComponent<Item> ();
+					Physics_Item it = c [i].GetComponent<Physics_Item> ();
 					if (it.equipped && it.equippedHand == HandRole.RightHand) {
 						it.PutDown ();
 						rightHandItem = null;
@@ -147,8 +147,8 @@ public class Player_Main : MonoBehaviour {
 					} else {
 						it.PickUp (rightController.gameObject, HandRole.LeftHand);
 					}
-					c[i].GetComponent<Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
-					leftHandItem = c [i].GetComponent<Item> ();
+					c[i].GetComponent<Physics_Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
+					leftHandItem = c [i].GetComponent<Physics_Item> ();
 					leftRModel.SetActive (false);
 					break;
 				}
@@ -170,7 +170,7 @@ public class Player_Main : MonoBehaviour {
 			for (int i = 0; i < c.Length; i++) {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
-					Item it = c[i].GetComponent<Item>();
+					Physics_Item it = c[i].GetComponent<Physics_Item>();
 					if (it.equipped && it.equippedHand == HandRole.LeftHand) {
 						it.PutDown ();
 						leftHandItem = null;

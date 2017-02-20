@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
-public class AngrySlingshot : Item {
+public class AngrySlingshot : Physics_Item {
     public AudioClip activate;
     public AudioClip strech;
     public AudioClip pull;

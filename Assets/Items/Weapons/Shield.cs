@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shield : Item {
+public class Shield : Physics_Item {
 
 }

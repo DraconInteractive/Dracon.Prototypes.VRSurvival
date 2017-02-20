@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AngrySlingNotch : Item {
+public class AngrySlingNotch : Physics_Item {
 
 	// Use this for initialization
 	void Start () {

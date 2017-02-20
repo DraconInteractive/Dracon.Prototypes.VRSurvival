@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sword : Item {
+public class Sword : Physics_Item {
 
 	public int damage;
 

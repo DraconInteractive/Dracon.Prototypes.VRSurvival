@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Torch : Item {
+public class Torch : Physics_Item {
 
 
 }
