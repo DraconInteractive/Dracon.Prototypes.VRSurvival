@@ -11,25 +11,40 @@ public class Door : MonoBehaviour {
 	Vector3 initPos;
 
 	Vector3 doorVel;
+
+	bool doorOpen;
+	Coroutine movementRoutine;
 	// Use this for initialization
 	void Start () {
 		initPos = transform.position;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		if (CheckPlayerDist()) {
-			transform.position = Vector3.SmoothDamp(transform.position, initPos + Vector3.up * yOffset, ref doorVel, 0.1f);
-		} else {
-			transform.position = Vector3.SmoothDamp(transform.position, initPos, ref doorVel, 0.1f);
-		}
+	IEnumerator OpenDoor () {
+		yield break;
 	}
 
-	bool CheckPlayerDist () {
-		if (Vector3.Distance(Camera.main.transform.position, transform.position) < activationDistance) {
-			return true;
-		}	
+	IEnumerator CloseDoor () {
+		yield break;
+	}
 
-		return false;
+	public void ToggleDoorState (bool open) {
+		
+		if (open) {
+			if (!doorOpen) {
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+					movementRoutine = null;
+				}
+				StartCoroutine (OpenDoor ());
+			}
+		} else {
+			if (doorOpen) {
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+					movementRoutine = null;
+				}
+				StartCoroutine (CloseDoor ());
+			}
+		}
 	}
 }

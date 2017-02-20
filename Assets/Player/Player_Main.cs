@@ -60,14 +60,12 @@ public class Player_Main : MonoBehaviour {
 	List<GameObject> lastLeftC = new List<GameObject>();
 	List<GameObject> lastRightC = new List<GameObject>();
 	float lCTimer, rCTimer;
-<<<<<<< HEAD
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
 	float gazeTimer;
 	GameObject lastGaze;
-=======
->>>>>>> origin/master
+
 	#endregion
 
 	#region Standard Functions
@@ -90,10 +88,6 @@ public class Player_Main : MonoBehaviour {
 		P_Input ();
 		PlayerMenu ();
 		GazeUpdate ();
-//		playerCollider.center = mainC.transform.position/* - Vector3.up * 1.4f*/;
-//		if (!Physics.Raycast(mainC.transform.position, Vector3.down)) {
-//			transform.Translate (Vector3.up * Time.deltaTime);
-//		}
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -253,7 +247,7 @@ public class Player_Main : MonoBehaviour {
 					gazeTimer += Time.deltaTime;
 					if (gazeTimer >= 1) {
 						gazeTimer = 0;
-						ReturnToInventory (HandRole.LeftHand, leftHandItem);
+//						ReturnToInventory (HandRole.LeftHand, leftHandItem);
 					}
 				} else {
 					gazeTimer = 0;
@@ -267,7 +261,7 @@ public class Player_Main : MonoBehaviour {
 					gazeTimer += Time.deltaTime;
 					if (gazeTimer >= 1) {
 						gazeTimer = 0;
-						ReturnToInventory (HandRole.RightHand, rightHandItem);
+//						ReturnToInventory (HandRole.RightHand, rightHandItem);
 					}
 				} else {
 					gazeTimer = 0;
@@ -278,40 +272,6 @@ public class Player_Main : MonoBehaviour {
 			gazeTimer = 0;
 		}
 
-//		List<GameObject> myObjectsUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
-//		List<GameObject> myObjectsUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
-//
-//		if (lastLeftC != myObjectsUnderPointerL) {
-//			lastLeftC = myObjectsUnderPointerL;
-//			lCTimer = 0;
-//		} else {
-//			lCTimer += Time.deltaTime;
-//			if (lCTimer >= 1) {
-//				lCTimer = 0;
-//				foreach (GameObject go in myObjectsUnderPointerL) {
-//					Selectable sel = go.GetComponent<Selectable> ();
-//					if (sel != null && sel is Button) {
-//						(sel as Button).onClick.Invoke ();
-//					}
-//				}
-//			}
-//		}
-//
-//		if (lastRightC != myObjectsUnderPointerR) {
-//			lastRightC = myObjectsUnderPointerL;
-//			rCTimer = 0;
-//		} else {
-//			rCTimer += Time.deltaTime;
-//			if (rCTimer >= 1) {
-//				rCTimer = 0;
-//				foreach (GameObject go in myObjectsUnderPointerR) {
-//					Selectable sel = go.GetComponent<Selectable> ();
-//					if (sel != null && sel is Button) {
-//						(sel as Button).onClick.Invoke ();
-//					}
-//				}
-//			}
-//		}
 	}
            
 	#endregion
