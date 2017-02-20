@@ -13,6 +13,8 @@ TagManager:
   - Collide
   - Blade
   - NPC
+  - HandMenuR
+  - HandMenuL
   layers:
   - Default
   - TransparentFX

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using HTC.UnityPlugin.Vive;
 using CurvedUI;
 
@@ -60,7 +61,10 @@ public class Player_Main : MonoBehaviour {
 	List<GameObject> lastRightC = new List<GameObject>();
 	float lCTimer, rCTimer;
 
-	Button returnToInvButtonL, returnToINVButtonR;
+	public Button returnToInvButtonL, returnToINVButtonR;
+
+	float gazeTimer;
+	GameObject lastGaze;
 	#endregion
 
 	#region Standard Functions
@@ -236,46 +240,78 @@ public class Player_Main : MonoBehaviour {
 		Ray ray = new Ray (mainC.transform.position, mainC.transform.forward);
 
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-			if (hit.collider.tag == "NPC") {
+			string t = hit.collider.tag;
+			GameObject hitObj = hit.collider.gameObject;
+			if (t == "NPC") {
 				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
 				npc.gazeTrigger = true;
-			}
-		}
-
-		List<GameObject> myObjectsUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
-		List<GameObject> myObjectsUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
-
-		if (lastLeftC != myObjectsUnderPointerL) {
-			lastLeftC = myObjectsUnderPointerL;
-			lCTimer = 0;
-		} else {
-			lCTimer += Time.deltaTime;
-			if (lCTimer >= 1) {
-				lCTimer = 0;
-				foreach (GameObject go in myObjectsUnderPointerL) {
-					Selectable sel = go.GetComponent<Selectable> ();
-					if (sel != null && sel is Button) {
-						(sel as Button).onClick.Invoke ();
+			} else if (t == "HandMenuL") {
+				Button b = hitObj.GetComponent<Button> ();
+				b.Select ();
+//				EventSystem.current.SetSelectedGameObject (hitObj);
+				if (lastGaze == hitObj) {
+					gazeTimer += Time.deltaTime;
+					if (gazeTimer >= 1) {
+						gazeTimer = 0;
+						ReturnToInventory (HandRole.LeftHand, leftHandItem);
 					}
+				} else {
+					gazeTimer = 0;
+					lastGaze = hitObj;
+				}
+			} else if (t == "HandMenuR") {
+				
+				Button b = hitObj.GetComponent<Button> ();
+				b.Select ();
+				if (lastGaze == hitObj) {
+					gazeTimer += Time.deltaTime;
+					if (gazeTimer >= 1) {
+						gazeTimer = 0;
+						ReturnToInventory (HandRole.RightHand, rightHandItem);
+					}
+				} else {
+					gazeTimer = 0;
+					lastGaze = hitObj;
 				}
 			}
+		} else {
+			gazeTimer = 0;
 		}
 
-		if (lastRightC != myObjectsUnderPointerR) {
-			lastRightC = myObjectsUnderPointerL;
-			rCTimer = 0;
-		} else {
-			rCTimer += Time.deltaTime;
-			if (rCTimer >= 1) {
-				rCTimer = 0;
-				foreach (GameObject go in myObjectsUnderPointerR) {
-					Selectable sel = go.GetComponent<Selectable> ();
-					if (sel != null && sel is Button) {
-						(sel as Button).onClick.Invoke ();
-					}
-				}
-			}
-		}
+//		List<GameObject> myObjectsUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
+//		List<GameObject> myObjectsUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsUnderPointer ();
+//
+//		if (lastLeftC != myObjectsUnderPointerL) {
+//			lastLeftC = myObjectsUnderPointerL;
+//			lCTimer = 0;
+//		} else {
+//			lCTimer += Time.deltaTime;
+//			if (lCTimer >= 1) {
+//				lCTimer = 0;
+//				foreach (GameObject go in myObjectsUnderPointerL) {
+//					Selectable sel = go.GetComponent<Selectable> ();
+//					if (sel != null && sel is Button) {
+//						(sel as Button).onClick.Invoke ();
+//					}
+//				}
+//			}
+//		}
+//
+//		if (lastRightC != myObjectsUnderPointerR) {
+//			lastRightC = myObjectsUnderPointerL;
+//			rCTimer = 0;
+//		} else {
+//			rCTimer += Time.deltaTime;
+//			if (rCTimer >= 1) {
+//				rCTimer = 0;
+//				foreach (GameObject go in myObjectsUnderPointerR) {
+//					Selectable sel = go.GetComponent<Selectable> ();
+//					if (sel != null && sel is Button) {
+//						(sel as Button).onClick.Invoke ();
+//					}
+//				}
+//			}
+//		}
 	}
            
 	void ReturnToInventory (HandRole hand, Item i) {

@@ -421,7 +421,7 @@ MonoBehaviour:
   player: {fileID: 0}
   itemType: 0
   dropOnAwake: 1
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 1670689199832594}
   damage: 25
 --- !u!208 &208779435759974588
 NavMeshObstacle:
