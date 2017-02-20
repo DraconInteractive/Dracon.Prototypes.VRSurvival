@@ -24,6 +24,8 @@ public class Player_Main : MonoBehaviour {
 	public int rockAmount, woodAmount;
 	[HideInInspector]
 	public Item leftHandItem, rightHandItem;
+	[HideInInspector]
+	public Item playerMelee_INV, playerRanged_INV;
 	#endregion
 
 	#region baseVAR-MENU
@@ -45,6 +47,12 @@ public class Player_Main : MonoBehaviour {
 
 	#region baseVar-SOUND
 	public AudioSource mainAS;
+	#endregion
+
+	#region baseVar-UI
+	public Sprite returnImg, testImg;
+
+	public Image topLeftImg, topRightImg;
 	#endregion
 
 	#region Standard Functions
@@ -241,6 +249,13 @@ public class Player_Main : MonoBehaviour {
 
 	void BeginRightCast () {
 //		rSpell = Instantiate (spellTemplate, rightController.transform.position + rightController.transform.forward * 0.075f - rightController.transform.up * 0.05f, Quaternion.identity, rightController.transform);
+		switch (rightSpell)
+		{
+		case Spell.Gesture:
+			rSpell = Instantiate (gestureSpellTemplate, rightController.transform.position + rightController.transform.forward * 0.075f - rightController.transform.up * 0.05f, Quaternion.identity, rightController.transform);
+			rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
+			break;
+		}
 		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
 
@@ -273,20 +288,51 @@ public class Player_Main : MonoBehaviour {
 
 	void ToggleLeftMenu (bool state) {
 		leftMenu.SetActive (state);
+		if (leftHandItem != null) {
+			topLeftImg.sprite = returnImg;
+		} else {
+			topLeftImg.sprite = testImg;
+		}
 	}
 
 	void ToggleRightMenu (bool state) {
 		rightMenu.SetActive (state);
+		if (rightHandItem != null) {
+			topRightImg.sprite = returnImg;
+		} else {
+			topRightImg.sprite = testImg;
+		}
 	}
 
 	void PlayerMenu () {
 		//Manager of Wrist Menu's
 		if (leftMenu.activeSelf) {
-			
+			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.LeftHand);
+			if (padPress.y > 0.1f) {
+				if (leftHandItem != null) {
+					leftHandItem.ReturnToInventory ();
+				} else {
+					//TODO add instantiation of item prefab
+
+				}
+
+			} else if (padPress.y < 0.1f) {
+				ToggleLeftMenu (false);
+			}
 		}
 
 		if (rightMenu.activeSelf) {
-			
+			Vector2 padPress = ViveInput.GetPadPressAxis(HandRole.RightHand);
+			if (padPress.y > 0.1f) {
+				if (rightHandItem != null) {
+					rightHandItem.ReturnToInventory ();
+				} else {
+					//TODO add instantiation of item prefab
+				}
+
+			} else if (padPress.y < 0.1f) {
+				ToggleRightMenu (false);
+			}
 		}
 	}
 	#endregion

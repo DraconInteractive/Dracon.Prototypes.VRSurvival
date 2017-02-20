@@ -32,6 +32,7 @@ public class PickAxe : Item {
 	}
 
 	void Start () {
+		BaseStart ();
 		currentCharge = maxCharge;
 		htTarget = 1;
 	}

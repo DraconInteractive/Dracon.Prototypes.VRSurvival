@@ -11,6 +11,7 @@ public class Chopping_Axe : Item {
 	float timer, tTarget;
 
 	void Start () {
+		BaseStart ();
 		timer = 0;
 		tTarget = 1;
 	}

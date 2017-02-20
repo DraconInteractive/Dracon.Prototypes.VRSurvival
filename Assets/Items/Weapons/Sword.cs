@@ -9,6 +9,7 @@ public class Sword : Item {
 	bool recharged;
 
 	void Start () {
+		BaseStart ();
 		recharged = true;
 	}
 
