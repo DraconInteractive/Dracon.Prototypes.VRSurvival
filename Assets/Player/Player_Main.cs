@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using HTC.UnityPlugin.Vive;
 using CurvedUI;
 
-
 public class Player_Main : MonoBehaviour {
 	#region baseVar-STD
 	public static Player_Main player;
@@ -35,7 +34,8 @@ public class Player_Main : MonoBehaviour {
 	[HideInInspector]
 	public Base_Item leftHandItem, rightHandItem;
 	[HideInInspector]
-	public Physics_Item playerMelee_INV, playerRanged_INV;
+
+	public GameObject playerMelee_INV, playerRanged_INV;
     #endregion
 
     #region baseVAR-MENU
@@ -48,6 +48,7 @@ public class Player_Main : MonoBehaviour {
     [Header("baseVar SPELLS")]
     public GameObject gestureSpellTemplate;
     public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate;
+
 	GameObject lSpell, rSpell;
 
 	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword};
@@ -73,8 +74,8 @@ public class Player_Main : MonoBehaviour {
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
-	float gazeTimer;
-	GameObject lastGaze;
+//	float gazeTimer;
+//	GameObject lastGaze;
 
 	#endregion
 
@@ -142,7 +143,7 @@ public class Player_Main : MonoBehaviour {
 
     // TODO: For you own mental safety and sanity. Fix this shit peter. - Tom. 21-2-17.
     // cleaning and commenting only does so much.
-    // TODO: FIX: Rewrite this stuff in a separate class (in a seperate file please) and
+    // TODO: FIX: Rewrite this stuff in a separate class (in a separate file please) and
     // if you can, preferably in a separate component or even better, a static class.
     public void PickUpWithLeft()
     {
@@ -303,44 +304,98 @@ public class Player_Main : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 			string t = hit.collider.tag;
 			GameObject hitObj = hit.collider.gameObject;
+//			print ("Item Name: " + hitObj.name + " Item Tag: " + t);
 			if (t == "NPC") {
 				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
 				npc.gazeTrigger = true;
-			} else if (t == "HandMenuL") {
-				Button b = hitObj.GetComponent<Button> ();
-				b.Select ();
-//				EventSystem.current.SetSelectedGameObject (hitObj);
-				if (lastGaze == hitObj) {
-					gazeTimer += Time.deltaTime;
-					if (gazeTimer >= 1) {
-						gazeTimer = 0;
-//						ReturnToInventory (HandRole.LeftHand, leftHandItem);
-					}
-				} else {
-					gazeTimer = 0;
-					lastGaze = hitObj;
-				}
-			} else if (t == "HandMenuR") {
-				
-				Button b = hitObj.GetComponent<Button> ();
-				b.Select ();
-				if (lastGaze == hitObj) {
-					gazeTimer += Time.deltaTime;
-					if (gazeTimer >= 1) {
-						gazeTimer = 0;
-//						ReturnToInventory (HandRole.RightHand, rightHandItem);
-					}
-				} else {
-					gazeTimer = 0;
-					lastGaze = hitObj;
-				}
-			}
-		} else {
-			gazeTimer = 0;
+			} 
 		}
 
+		List<GameObject> objUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
+		List<GameObject> objUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
+
+		List<GameObject> combObj = new List<GameObject> ();
+		combObj.AddRange (objUnderPointerL);
+		combObj.AddRange (objUnderPointerR);
+		foreach (GameObject go in combObj) {
+			Button b = go.GetComponent<Button> ();
+			if (b != null) {
+				b.Select ();
+			}
+		}
+		if (objUnderPointerL == lastLeftC) {
+			lCTimer += Time.deltaTime;
+			if (lCTimer >= 1) {
+				print ("ActivatedL");
+				lCTimer = 0;
+			}
+		} else {
+			lastLeftC = objUnderPointerL;
+			lCTimer = 0;
+		}
+
+		if (objUnderPointerR == lastRightC) {
+			rCTimer += Time.deltaTime;
+			if (rCTimer >= 1) {
+				print ("ActivatedR");
+				rCTimer = 0;
+			}
+		} else {
+			lastRightC = objUnderPointerL;
+			rCTimer = 0;
+		}
 	}
-           
+         
+	void ReturnToInventory (HandRole hand, Physics_Item i) {
+
+		switch (hand)
+		{
+		case HandRole.LeftHand:
+			if (leftHandItem == null) {
+				break;
+			}
+			switch (i.itemType)
+			{
+			case Physics_Item.ItemType.Melee:
+				if (playerMelee_INV != null) {
+					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerMelee_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			case Physics_Item.ItemType.Ranged:
+				if (playerRanged_INV != null) {
+					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerRanged_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			}
+			break;
+		case HandRole.RightHand:
+			if (rightHandItem == null) {
+				break;
+			}
+			switch (i.itemType)
+			{
+			case Physics_Item.ItemType.Melee:
+				if (playerMelee_INV != null) {
+					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerMelee_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			case Physics_Item.ItemType.Ranged:
+				if (playerRanged_INV != null) {
+					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+				}
+				playerRanged_INV = i.itemPrefab;
+				Destroy (i.gameObject);
+				break;
+			}
+			break;
+		}
+	}
 	#endregion
 
 	#region Magic Functions

@@ -7,6 +7,8 @@ public class Tutorial_Melee_Weapon_Select : MonoBehaviour {
 	public static List<GameObject> weapons = new List<GameObject>();
 
 	Vector3 initPos;
+
+	public GameObject holoWall;
 	// Use this for initialization
 	void Start () {
 		initPos = transform.position;
@@ -21,6 +23,8 @@ public class Tutorial_Melee_Weapon_Select : MonoBehaviour {
 					Destroy (g);
 				}
 			}
+			Destroy (holoWall);
+			Destroy (GetComponent<Tutorial_Melee_Weapon_Select> ());
 		}
 	}
 }
