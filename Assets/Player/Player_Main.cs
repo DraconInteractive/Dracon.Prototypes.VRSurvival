@@ -144,7 +144,7 @@ public class Player_Main : MonoBehaviour {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
 					Base_Item it = c [i].GetComponent<Base_Item> ();
-					if (it.equipped && it.equippedHand == HandRole.RightHand) {
+					if (it.equipped && it.handRole == HandRole.RightHand) {
 						it.PutDown ();
 						rightHandItem = null;
 						rightRModel.SetActive (true);
@@ -179,7 +179,7 @@ public class Player_Main : MonoBehaviour {
 //				print (c [i].name);
 				if (c[i].gameObject.tag == "Item") {
                     Base_Item it = c[i].GetComponent<Base_Item>();
-					if (it.equipped && it.equippedHand == HandRole.LeftHand) {
+					if (it.equipped && it.handRole == HandRole.LeftHand) {
 						it.PutDown ();
 						leftHandItem = null;
 						leftRModel.SetActive (true);

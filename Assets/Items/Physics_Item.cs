@@ -87,77 +87,26 @@ public class Physics_Item : Base_Item
     public override void OnPickup(GameObject hand, HandRole handRole)
     {
         initStage = false;
-        equipped = true;
-        controllerObj = hand;
-        equippedHand = handRole;
         rb.useGravity = false;
-
-        switch (itemType)
-        {
-            case ItemType.Melee:
-                if (player.playerMelee_INV == null)
-                {
-                    player.playerMelee_INV = GetComponent<Physics_Item>();
-                }
-                break;
-            case ItemType.Ranged:
-                if (player.playerRanged_INV == null)
-                {
-                    player.playerRanged_INV = GetComponent<Physics_Item>();
-                }
-                break;
-        }
         print(name + " picked up");
     }
 
     public override void OnPutDown()
     {
         initStage = false;
-        equipped = false;
-        controllerObj = null;
         rb.useGravity = true;
-        switch (itemType)
-        {
-            case ItemType.Melee:
-                if (player.playerMelee_INV == GetComponent<Physics_Item>())
-                {
-                    player.playerMelee_INV = null;
-                }
-                break;
-            case ItemType.Ranged:
-                if (player.playerRanged_INV == GetComponent<Physics_Item>())
-                {
-                    player.playerRanged_INV = null;
-                }
-                break;
-        }
     }
-    [Obsolete("Physics_Item.PickUp is obsolete, please ise OnPickup instead.")]
+    [Obsolete("Physics_Item.PickUp is obsolete, please use OnPickup instead.")]
     public virtual void PickUp(GameObject hand, HandRole handType)
     {
         Debug.LogWarning("Old Method");
 
         initStage = false;
-        equipped = true;
+        /*equipped = true;
         controllerObj = hand;
-        equippedHand = handType;
+        handRole = handType;*/
         rb.useGravity = false;
 
-        switch (itemType)
-        {
-            case ItemType.Melee:
-                if (player.playerMelee_INV == null)
-                {
-                    player.playerMelee_INV = GetComponent<Physics_Item>();
-                }
-                break;
-            case ItemType.Ranged:
-                if (player.playerRanged_INV == null)
-                {
-                    player.playerRanged_INV = GetComponent<Physics_Item>();
-                }
-                break;
-        }
         print(name + " picked up");
     }
     [Obsolete("Physics_Item.PutDown is obsolete, please use OnPutDown instead.")]
@@ -166,47 +115,9 @@ public class Physics_Item : Base_Item
         Debug.LogWarning("Old Method");
 
         initStage = false;
-        equipped = false;
-        controllerObj = null;
+        /*equipped = false;
+        controllerObj = null;*/
         rb.useGravity = true;
-        switch (itemType)
-        {
-            case ItemType.Melee:
-                if (player.playerMelee_INV == GetComponent<Physics_Item>())
-                {
-                    player.playerMelee_INV = null;
-                }
-                break;
-            case ItemType.Ranged:
-                if (player.playerRanged_INV == GetComponent<Physics_Item>())
-                {
-                    player.playerRanged_INV = null;
-                }
-                break;
-        }
-    }
-    //TODO: Move all Invetory calls over to the Base_Item class.
-    public virtual void ReturnToInventory()
-    {
-        switch (itemType)
-        {
-            case ItemType.Melee:
-                player.playerMelee_INV = GetComponent<Physics_Item>();
-                break;
-            case ItemType.Ranged:
-                player.playerRanged_INV = GetComponent<Physics_Item>();
-                break;
-        }
-
-        Destroy(this.gameObject);
-
-        //TODO this wont work. Its storing a reference not a copy. 
-        //Gotta see if I can direct it to a prefab type, etc. 
-
-        //IDEA. The item stores a prefab of itself and the player grabs this. 
-        //IDEA 2, The item doesnt destroy, just deactivates
-        //IDEA 3, the item doesnt deactivate, just holsters, Raw Data style. 
-        //IDEA 3 cont., Make sure to turn off colliders etc for it when holstered. 
     }
 
     [System.Obsolete("This is obsolete, Please override awake instead.")]

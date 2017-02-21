@@ -12,6 +12,8 @@ public class AngrySlingshot : Physics_Item {
     public Transform graphic;
     public Transform sling;
 
+    public AngrySlingNotch notch;
+
     AudioSource sound;
 
 	void Start () {

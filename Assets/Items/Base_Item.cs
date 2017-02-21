@@ -7,9 +7,13 @@ public abstract class Base_Item : MonoBehaviour {
 
     [HideInInspector]
     public GameObject controllerObj;
-    public HandRole equippedHand;
-    public bool equipped;
+    [HideInInspector]
+    public HandRole handRole;
 
+    public bool equipped
+    {
+        get { return controllerObj != null; }
+    }
 
     internal virtual void Start()
     {
@@ -26,6 +30,10 @@ public abstract class Base_Item : MonoBehaviour {
 
     public void PickUp(GameObject hand, HandRole role)
     {
+        handRole = role;
+        controllerObj = hand;
+
+
         Debug.LogFormat("The {0} hand has picked up {1}",role.ToString(),name);
         OnPickup(hand, role);
     }
@@ -34,7 +42,9 @@ public abstract class Base_Item : MonoBehaviour {
 
     public void PutDown()
     {
+        controllerObj = null;
 
+        OnPutDown();
     }
     /// <summary>Called when the items has been removed from the hand.</summary>
     public abstract void OnPutDown();

@@ -56,7 +56,7 @@ public class PickAxe : Physics_Item {
 		}
 
 		if (equipped) {
-			if (ViveInput.GetPress(equippedHand, ControllerButton.FullTrigger)) {
+			if (ViveInput.GetPress(handRole, ControllerButton.FullTrigger)) {
 				StartBoost ();
 			} else {
 				EndBoost ();

@@ -1,16 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using HTC.UnityPlugin.Vive;
 using UnityEngine;
 
-public class AngrySlingNotch : Physics_Item {
+public class AngrySlingNotch : Base_Item {
+    public override void OnPickup(GameObject hand, HandRole handRole)
+    {
+        throw new NotImplementedException();
+    }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public override void OnPutDown()
+    {
+        throw new NotImplementedException();
+    }
 }
