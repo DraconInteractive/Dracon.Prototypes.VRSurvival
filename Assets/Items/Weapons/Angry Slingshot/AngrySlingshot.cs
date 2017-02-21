@@ -14,8 +14,12 @@ public class AngrySlingshot : Physics_Item
 
     public AngrySlingNotch notch;
 
-    public float maxiumDistance = 0.31f;
-    public float maxiumSlingScale = 1.3f;
+    [UnityEngine.Serialization.FormerlySerializedAs("maxiumDistance")]
+    public float maximumDistance = 0.31f;
+    [UnityEngine.Serialization.FormerlySerializedAs("maxiumSlingScale")]
+    public float maximumSlingScale = 1.3f;
+
+    public float maximumVelocity = 100f;
 
     bool notchGrabbed;
     bool soundPlayed = false;
@@ -26,6 +30,13 @@ public class AngrySlingshot : Physics_Item
 
     public Animation anim;
     AnimationState animation;
+
+    public GameObject projectilePrefab;
+
+    PhysProjectile currentProjectile;
+
+    Vector3 normal;
+    float stretchDecimal;
 
 
 
@@ -69,6 +80,16 @@ public class AngrySlingshot : Physics_Item
     {
         notchGrabbed = true;
         soundPlayed = false;
+
+        currentProjectile = Instantiate(projectilePrefab, hand.transform.position, projectilePrefab.transform.rotation).GetComponent<PhysProjectile>();
+        var cpc = currentProjectile.GetComponent<Collider>();
+        var myc = GetComponent<Collider>();
+        var plc = player.GetComponent<Collider>();
+
+        Physics.IgnoreCollision(cpc, myc);
+        Physics.IgnoreCollision(cpc, plc);
+
+        currentProjectile.rigidbody.isKinematic = true;
     }
 
     internal override void Update()
@@ -81,13 +102,21 @@ public class AngrySlingshot : Physics_Item
         Vector3 fromPosition = transform.TransformPoint(slingForkPoint);
 
         float distance = Vector3.Distance(fromPosition, pullPosition);
-        distance = Mathf.Clamp(distance, 0, maxiumDistance);
+        distance = Mathf.Clamp(distance, 0, maximumDistance);
 
-        SetSlingStrech(distance / maxiumDistance);
+        stretchDecimal = distance / maximumDistance;
 
-        Vector3 normal = fromPosition - pullPosition;
+        SetSlingStrech(stretchDecimal);
+
+        normal = (fromPosition - pullPosition).normalized;
 
         graphic.rotation = Quaternion.LookRotation(normal.normalized, transform.forward);
+
+        if(currentProjectile != null)
+        {
+            currentProjectile.transform.position = fromPosition - (normal * distance);
+            currentProjectile.transform.forward = normal;
+        }
     }
 
     public override void OnPickup(GameObject hand, HandRole handRole)
@@ -142,6 +171,10 @@ public class AngrySlingshot : Physics_Item
     public void Fire()
     {
         sound.PlayOneShot(fire);
+
+        currentProjectile.rigidbody.isKinematic = false;
+        currentProjectile.Fire(normal, currentProjectile.transform.position, maximumVelocity * stretchDecimal);
+        currentProjectile = null;
     }
 
 #if UNITY_EDITOR
@@ -153,8 +186,8 @@ public class AngrySlingshot : Physics_Item
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(pos, size * 0.3f);
 
-        Gizmos.DrawRay(pos, transform.up * maxiumDistance);
-        Gizmos.DrawWireSphere(pos + (transform.up * maxiumDistance), size * 0.1f);
+        Gizmos.DrawRay(pos, transform.up * maximumDistance);
+        Gizmos.DrawWireSphere(pos + (transform.up * maximumDistance), size * 0.1f);
     }
 #endif
 }
