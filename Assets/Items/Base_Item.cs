@@ -10,6 +10,8 @@ public abstract class Base_Item : MonoBehaviour {
     [HideInInspector]
     public HandRole handRole;
 
+    public bool interactable = true;
+
     public bool equipped
     {
         get { return controllerObj != null; }
@@ -21,7 +23,11 @@ public abstract class Base_Item : MonoBehaviour {
     }
     internal virtual void Update()
     {
-
+        if (controllerObj != null)
+        {
+            transform.position = controllerObj.transform.position;
+            transform.rotation = controllerObj.transform.rotation;
+        }
     }
     internal virtual void Awake()
     {

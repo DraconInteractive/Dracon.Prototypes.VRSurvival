@@ -18,41 +18,51 @@ public class Player_Main : MonoBehaviour {
 
 	Camera mainC;
 
-	public float speed;
-	#endregion
+    [Tooltip("Fastest speed the player can travel. M/s/s (yes that's metres per second per second)")]
+    public float speed;
 
-	#region baseVar-INV
-	[HideInInspector]
+    [Tooltip("How much velocity should we add to the trow.")]
+    public float itemThrowRatio = 1.2f;
+    #endregion
+
+    #region baseVar-SOUND
+    public AudioSource mainAS;
+    #endregion
+
+    #region baseVar-INV
+    [HideInInspector]
 	public int rockAmount, woodAmount;
 	[HideInInspector]
 	public Base_Item leftHandItem, rightHandItem;
 	[HideInInspector]
 	public Physics_Item playerMelee_INV, playerRanged_INV;
-	#endregion
+    #endregion
 
-	#region baseVAR-MENU
-	public GameObject mainMenuTemplate, leftMenu, rightMenu;
-	#endregion
+    #region baseVAR-MENU
+    [Header("baseVar MENU")]
+    public GameObject mainMenuTemplate;
+    public GameObject leftMenu, rightMenu;
+    #endregion
 
-	#region baseVar-SPELLS
-	public GameObject gestureSpellTemplate, telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate;
+    #region baseVar-SPELLS
+    [Header("baseVar SPELLS")]
+    public GameObject gestureSpellTemplate;
+    public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate;
 	GameObject lSpell, rSpell;
 
 	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword};
 	public Spell leftSpell, rightSpell;
-	#endregion
+    #endregion
 
-	#region baseVar-ADAPTIVE COLLISIONS
-//	[HideInInspector]
-//	public CapsuleCollider playerCollider;
-	#endregion
+    #region baseVar-ADAPTIVE COLLISIONS
+    //	[HideInInspector]
+    //	public CapsuleCollider playerCollider;
+    #endregion
 
-	#region baseVar-SOUND
-	public AudioSource mainAS;
-	#endregion
-
-	#region baseVar-UI
-	public Sprite returnImg, testImg;
+    #region baseVar-UI
+    [Header("baseVar UI")]
+    public Sprite returnImg;
+    public Sprite testImg;
 
 	public Image topLeftImg, topRightImg;
 
@@ -96,7 +106,10 @@ public class Player_Main : MonoBehaviour {
 		}
 	}
 
-	void Movement () {
+    //BUG: Time.deltaTime * Time.deltaTime, the speed is multiplied by Time.deltaTime twice.
+    //FIX: Remove the Time.deltaTime from the speedF and speedR values.
+    //TODO: Use Vectors. Why? So it makes more sense to Tom.
+    void Movement () {
 		Vector2 leftHandTouch = GetLeftPadTouch ();
 		if (leftHandTouch.magnitude != 0) {
 			Vector3 forwardMovement = new Vector3 (mainC.transform.forward.x, 0, mainC.transform.forward.z);
@@ -104,7 +117,7 @@ public class Player_Main : MonoBehaviour {
 			float speedF = ViveInput.GetPadTouchAxis (HandRole.LeftHand).y * speed * Time.deltaTime;
 			float speedR = ViveInput.GetPadTouchAxis (HandRole.LeftHand).x * speed * Time.deltaTime;
 
-			rb.MovePosition (transform.position + (forwardMovement * speedF * Time.deltaTime) + (sidewardMovement * speedR * Time.deltaTime));
+			rb.MovePosition(transform.position + (forwardMovement * speedF * Time.deltaTime) + (sidewardMovement * speedR * Time.deltaTime));
 		}
 	}
 	#endregion
@@ -123,79 +136,125 @@ public class Player_Main : MonoBehaviour {
 		Gizmos.DrawWireSphere (leftController.transform.position, 0.1f);
 		Gizmos.DrawWireSphere (rightController.transform.position, 0.1f);
 	}
-	#endregion
+    #endregion
 
-	#region Interaction Functions
+    #region Interaction Functions
 
     // TODO: For you own mental safety and sanity. Fix this shit peter. - Tom. 21-2-17.
-	public void PickUpWithLeft () {
-		if (leftHandItem != null) {
-			leftHandItem.PutDown ();
-			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+    // cleaning and commenting only does so much.
+    // TODO: FIX: Rewrite this stuff in a separate class (in a seperate file please) and
+    // if you can, preferably in a separate component or even better, a static class.
+    public void PickUpWithLeft()
+    {
+        // Drop the current item.
+        if (leftHandItem != null)
+        {
+            leftHandItem.PutDown();
 
+            // If the item is a physics item then add angular and linear velocity to it's rigidbody.
             if (leftHandItem is Physics_Item)
-                (leftHandItem as Physics_Item).rb.velocity = d.velocity * 1.2f;
+            {
+                var device = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+                var rigidbody = (leftHandItem as Physics_Item).rb;
+                rigidbody.velocity = device.velocity * itemThrowRatio;
+                rigidbody.angularVelocity = device.angularVelocity * itemThrowRatio;
+            }
 
-			leftHandItem = null;
-			leftRModel.SetActive (true);
-		} else {
-			Collider[] c = Physics.OverlapSphere (leftController.transform.position, 0.1f);
-			for (int i = 0; i < c.Length; i++) {
-//				print (c [i].name);
-				if (c[i].gameObject.tag == "Item") {
-					Base_Item it = c [i].GetComponent<Base_Item> ();
-					if (it.equipped && it.handRole == HandRole.RightHand) {
-						it.PutDown ();
-						rightHandItem = null;
-						rightRModel.SetActive (true);
-						it.PickUp (rightController.gameObject, HandRole.LeftHand);
-					} else {
-						it.PickUp (rightController.gameObject, HandRole.LeftHand);
-					}
-					c[i].GetComponent<Base_Item>().PickUp (leftController.gameObject, HandRole.LeftHand);
-					leftHandItem = c [i].GetComponent<Base_Item> ();
-					leftRModel.SetActive (false);
-					break;
-				}
-			}
+            leftHandItem = null;
+            leftRModel.SetActive(true);
 
-		}
-
-	}
-
-	public void PickUpWithRight () {
-		if (rightHandItem != null) {
-			rightHandItem.PutDown ();
-			SteamVR_Controller.Device d = SteamVR_Controller.Input ((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
-
-            if(rightHandItem is Physics_Item)
-                (rightHandItem as Physics_Item).rb.velocity = d.velocity * 1.2f;
-
-			rightHandItem = null;
-			rightRModel.SetActive (true);
-		} else {
-			Collider[] c = Physics.OverlapSphere (rightController.transform.position, 0.1f);
-			for (int i = 0; i < c.Length; i++) {
-//				print (c [i].name);
-				if (c[i].gameObject.tag == "Item") {
+        }
+        // Pick up an item if one was found.
+        else
+        {
+            Collider[] c = Physics.OverlapSphere(leftController.transform.position, 0.1f);
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i].gameObject.tag == "Item")
+                {
                     Base_Item it = c[i].GetComponent<Base_Item>();
-					if (it.equipped && it.handRole == HandRole.LeftHand) {
-						it.PutDown ();
-						leftHandItem = null;
-						leftRModel.SetActive (true);
-						it.PickUp (rightController.gameObject, HandRole.RightHand);
-					} else {
-						it.PickUp (rightController.gameObject, HandRole.RightHand);
-					}
 
-					rightHandItem = it;
-					rightRModel.SetActive (false);
-					break;
-				}
-			}
-		}
+                    if (!it.interactable)
+                        continue;
 
-	}
+                    // Fancy hand switching.
+                    if (it.equipped && it.handRole == HandRole.RightHand)
+                    {
+                        it.PutDown();
+                        rightHandItem = null;
+                        rightRModel.SetActive(true);
+                        it.PickUp(rightController.gameObject, HandRole.LeftHand);
+                    }
+                    // Just boring old picking up things.
+                    else
+                    {
+                        it.PickUp(leftController.gameObject, HandRole.LeftHand);
+                    }
+
+                    leftHandItem = it;
+                    leftRModel.SetActive(false);
+                    break;
+                }
+            }
+
+        }
+
+    }
+
+    public void PickUpWithRight()
+    {
+        // Drop the current item.
+        if (rightHandItem != null)
+        {
+            rightHandItem.PutDown();
+
+            // If the item is a physics item then add angular and linear velocity to it's rigidbody.
+            if (rightHandItem is Physics_Item)
+            {
+                var device = SteamVR_Controller.Input((int)rightController.GetComponent<SteamVR_TrackedObject>().index);
+                var rigidbody = (rightHandItem as Physics_Item).rb;
+                rigidbody.velocity = device.velocity * itemThrowRatio;
+                rigidbody.angularVelocity = device.angularVelocity * itemThrowRatio;
+            }
+
+            rightHandItem = null;
+            rightRModel.SetActive(true);
+        }
+        // Pick up an item if one was found.
+        else
+        {
+            Collider[] c = Physics.OverlapSphere(rightController.transform.position, 0.1f);
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i].gameObject.tag == "Item")
+                {
+                    Base_Item it = c[i].GetComponent<Base_Item>();
+
+                    if (!it.interactable)
+                        continue;
+
+                    // Fancy hand switching.
+                    if (it.equipped && it.handRole == HandRole.LeftHand)
+                    {
+                        it.PutDown();
+                        leftHandItem = null;
+                        leftRModel.SetActive(true);
+                        it.PickUp(rightController.gameObject, HandRole.RightHand);
+                    }
+                    // Just boring old picking up things.
+                    else
+                    {
+                        it.PickUp(rightController.gameObject, HandRole.RightHand);
+                    }
+
+                    rightHandItem = it;
+                    rightRModel.SetActive(false);
+                    break;
+                }
+            }
+        }
+
+    }
 
 	void P_Input () {
 		if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Grip)) {
