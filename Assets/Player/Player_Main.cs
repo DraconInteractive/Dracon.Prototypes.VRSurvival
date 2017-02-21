@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 using HTC.UnityPlugin.Vive;
 using CurvedUI;
 
-
 public class Player_Main : MonoBehaviour {
 	#region baseVar-STD
 	public static Player_Main player;
@@ -57,14 +56,14 @@ public class Player_Main : MonoBehaviour {
 	public Image topLeftImg, topRightImg;
 
 	public GameObject leftCanvas, rightCanvas;
-//	List<GameObject> lastLeftC = new List<GameObject>();
-//	List<GameObject> lastRightC = new List<GameObject>();
-//	float lCTimer, rCTimer;
+	List<GameObject> lastLeftC = new List<GameObject>();
+	List<GameObject> lastRightC = new List<GameObject>();
+	float lCTimer, rCTimer;
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
-	float gazeTimer;
-	GameObject lastGaze;
+//	float gazeTimer;
+//	GameObject lastGaze;
 
 	#endregion
 
@@ -243,8 +242,39 @@ public class Player_Main : MonoBehaviour {
 			} 
 		}
 
-//		EventSystem.current.gameObject.GetComponent<CurvedUIInputModule>().get
+		List<GameObject> objUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
+		List<GameObject> objUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
 
+		List<GameObject> combObj = new List<GameObject> ();
+		combObj.AddRange (objUnderPointerL);
+		combObj.AddRange (objUnderPointerR);
+		foreach (GameObject go in combObj) {
+			Button b = go.GetComponent<Button> ();
+			if (b != null) {
+				b.Select ();
+			}
+		}
+		if (objUnderPointerL == lastLeftC) {
+			lCTimer += Time.deltaTime;
+			if (lCTimer >= 1) {
+				print ("ActivatedL");
+				lCTimer = 0;
+			}
+		} else {
+			lastLeftC = objUnderPointerL;
+			lCTimer = 0;
+		}
+
+		if (objUnderPointerR == lastRightC) {
+			rCTimer += Time.deltaTime;
+			if (rCTimer >= 1) {
+				print ("ActivatedR");
+				rCTimer = 0;
+			}
+		} else {
+			lastRightC = objUnderPointerL;
+			rCTimer = 0;
+		}
 	}
          
 	void ReturnToInventory (HandRole hand, Physics_Item i) {
