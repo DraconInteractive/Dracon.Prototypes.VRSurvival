@@ -17,6 +17,11 @@ public abstract class Base_Item : MonoBehaviour {
         get { return controllerObj != null; }
     }
 
+	public enum ItemType { Melee, Ranged, Tool };
+	public ItemType itemType;
+
+	public GameObject itemPrefab;
+
     internal virtual void Start()
     {
 

@@ -345,32 +345,34 @@ public class Player_Main : MonoBehaviour {
 				print ("No HandButton");
 			}
 		}
-		print (s);
-
-		if (objUnderPointerL == lastLeftC) {
-			lCTimer += Time.deltaTime;
-			if (lCTimer >= 1) {
-				print ("ActivatedL");
-				lCTimer = 0;
-			}
-		} else {
-			lastLeftC = objUnderPointerL;
-			lCTimer = 0;
-		}
-
-		if (objUnderPointerR == lastRightC) {
-			rCTimer += Time.deltaTime;
-			if (rCTimer >= 1) {
-				print ("ActivatedR");
-				rCTimer = 0;
-			}
-		} else {
-			lastRightC = objUnderPointerL;
-			rCTimer = 0;
-		}
+//		print (s);
+//
+//		if (objUnderPointerL == lastLeftC) {
+//			lCTimer += Time.deltaTime;
+//			if (lCTimer >= 1) {
+//				print ("ActivatedL");
+//				lCTimer = 0;
+//			}
+//		} else {
+//			lastLeftC = objUnderPointerL;
+//			lCTimer = 0;
+//		}
+//
+//		if (objUnderPointerR == lastRightC) {
+//			rCTimer += Time.deltaTime;
+//			if (rCTimer >= 1) {
+//				print ("ActivatedR");
+//				rCTimer = 0;
+//			}
+//		} else {
+//			lastRightC = objUnderPointerL;
+//			rCTimer = 0;
+//		}
+//		print ("LC:" + lCTimer);
+//		print ("RC:" + rCTimer);
 	}
          
-	void ReturnToInventory (HandRole hand, Physics_Item i) {
+	public void ReturnToInventory (HandRole hand, Base_Item i) {
 
 		switch (hand)
 		{
@@ -380,16 +382,16 @@ public class Player_Main : MonoBehaviour {
 			}
 			switch (i.itemType)
 			{
-			case Physics_Item.ItemType.Melee:
+			case Base_Item.ItemType.Melee:
 				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerMelee_INV = i.itemPrefab;
 				Destroy (i.gameObject);
 				break;
-			case Physics_Item.ItemType.Ranged:
+			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, leftController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerRanged_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerRanged_INV = i.itemPrefab;
 				Destroy (i.gameObject);
@@ -402,16 +404,16 @@ public class Player_Main : MonoBehaviour {
 			}
 			switch (i.itemType)
 			{
-			case Physics_Item.ItemType.Melee:
+			case Base_Item.ItemType.Melee:
 				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerMelee_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerMelee_INV = i.itemPrefab;
 				Destroy (i.gameObject);
 				break;
-			case Physics_Item.ItemType.Ranged:
+			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV.GetComponent<Physics_Item> ().itemPrefab, rightController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerRanged_INV = i.itemPrefab;
 				Destroy (i.gameObject);

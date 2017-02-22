@@ -17,12 +17,11 @@ public class Physics_Item : Base_Item
     [HideInInspector]
     public Player_Main player;
 
-    public enum ItemType { Melee, Ranged, Tool };
-    public ItemType itemType;
+    
 
     public bool dropOnAwake;
 
-    public GameObject itemPrefab;
+   
 
 
     internal override void Awake()
