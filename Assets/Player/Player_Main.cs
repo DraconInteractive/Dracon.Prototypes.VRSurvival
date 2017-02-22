@@ -331,7 +331,7 @@ public class Player_Main : MonoBehaviour {
 
 		List<GameObject> combObj = new List<GameObject> ();
 
-		print (combObj.Count);
+//		print (combObj.Count);
 		combObj.AddRange (objUnderPointerL);
 		combObj.AddRange (objUnderPointerR);
 		print (combObj.Count);
@@ -421,6 +421,10 @@ public class Player_Main : MonoBehaviour {
 			}
 			break;
 		}
+	}
+
+	public void FetchFromInventory (GameObject item, int i) {
+		
 	}
 	#endregion
 
