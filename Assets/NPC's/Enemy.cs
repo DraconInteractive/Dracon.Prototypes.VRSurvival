@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour {
 	float attackTimer;
 	public float attackTimerTarget;
 	public float detectionRange, attackingRange;
+	public float speed;
+	bool moving;
 	void Awake () {
 		rb = GetComponent<Rigidbody> ();
 		anim = GetComponent<Animator> ();
@@ -40,6 +42,11 @@ public class Enemy : MonoBehaviour {
 			Combat ();
 		}
 		TimerUpdate ();
+		if (moving) {
+			anim.SetFloat ("speed", 1);
+		} else {
+			anim.SetFloat ("speed", 0);
+		}
 	}
 
 	void Detection () {
@@ -74,10 +81,12 @@ public class Enemy : MonoBehaviour {
 	void Combat () {
 		FindClosestTarget ();
 		if (attackTimer >= attackTimerTarget && InAttackingRange(attackTarget)) {
+			moving = false;
 			Attack ();
 		} else {
 			MoveToTarget ();
 		}
+
 	}
 
 	void Attack () {
@@ -88,6 +97,11 @@ public class Enemy : MonoBehaviour {
 	void MoveToTarget () {
 		if (Quaternion.Angle(transform.rotation, Quaternion.LookRotation(attackTarget.transform.position - transform.position, Vector3.up)) > 1) {
 			rb.MoveRotation (Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (attackTarget.transform.position - transform.position, Vector3.up),0.1f));
+		} else {
+			if (Vector3.Distance(transform.position, attackTarget.transform.position) > 2) {
+				rb.MovePosition (transform.position + transform.forward * speed * Time.deltaTime);
+				moving = true;
+			}
 		}
 	}
 

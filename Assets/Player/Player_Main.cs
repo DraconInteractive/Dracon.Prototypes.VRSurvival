@@ -74,8 +74,8 @@ public class Player_Main : MonoBehaviour {
 
 	public Button returnToInvButtonL, returnToINVButtonR;
 
-//	float gazeTimer;
-//	GameObject lastGaze;
+	float gazeTimer;
+	GameObject lastGaze;
 
 	#endregion
 
@@ -311,18 +311,42 @@ public class Player_Main : MonoBehaviour {
 			} 
 		}
 
+//		GameObject go = EventSystem.current.gameObject.GetComponent<CurvedUIInputModule> ().CurrentPointedAt;
+//		if (go != null) {
+//			print ("Input Feedback" + "\n" + "GO Name: " + go.name);
+//		}
+//
+//		if (lastGaze == go) {
+//			gazeTimer += Time.deltaTime;
+//			if (gazeTimer >= 1) {
+//				print ("Activated");
+//				gazeTimer = 0;
+//			}
+//		} else {
+//			lastGaze = go;
+//			gazeTimer = 0;
+//		}
 		List<GameObject> objUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
 		List<GameObject> objUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
 
 		List<GameObject> combObj = new List<GameObject> ();
+
+		print (combObj.Count);
 		combObj.AddRange (objUnderPointerL);
 		combObj.AddRange (objUnderPointerR);
+		print (combObj.Count);
+		string s = "";
 		foreach (GameObject go in combObj) {
-			Button b = go.GetComponent<Button> ();
+			s += "\n" + go.name;
+			HandButton b = go.GetComponent<HandButton> ();
 			if (b != null) {
-				b.Select ();
+				b.gazeTrigger = true;
+			} else {
+				print ("No HandButton");
 			}
 		}
+		print (s);
+
 		if (objUnderPointerL == lastLeftC) {
 			lCTimer += Time.deltaTime;
 			if (lCTimer >= 1) {

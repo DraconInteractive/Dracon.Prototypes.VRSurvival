@@ -51,7 +51,7 @@ public class CurvedUIInputModule : StandaloneInputModule {
 
     //Support Variables - common
     private GameObject currentDragging;
-    private GameObject currentPointedAt;
+    public GameObject currentPointedAt;
 
     //Support variables - custom ray
     Ray customControllerRay;
