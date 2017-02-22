@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using HTC.UnityPlugin.Vive;
 using CurvedUI;
 
-public class Player_Main : MonoBehaviour {
+public partial class Player_Main : MonoBehaviour {
 	#region baseVar-STD
 	public static Player_Main player;
 
@@ -296,81 +296,6 @@ public class Player_Main : MonoBehaviour {
 			EndLeftCast ();
 		}
 	}
-
-	void GazeUpdate () {
-		RaycastHit hit;
-		Ray ray = new Ray (mainC.transform.position, mainC.transform.forward);
-
-		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-			string t = hit.collider.tag;
-			GameObject hitObj = hit.collider.gameObject;
-//			print ("Item Name: " + hitObj.name + " Item Tag: " + t);
-			if (t == "NPC") {
-				NPC npc = hit.collider.gameObject.GetComponent<NPC> ();
-				npc.gazeTrigger = true;
-			} 
-		}
-
-//		GameObject go = EventSystem.current.gameObject.GetComponent<CurvedUIInputModule> ().CurrentPointedAt;
-//		if (go != null) {
-//			print ("Input Feedback" + "\n" + "GO Name: " + go.name);
-//		}
-//
-//		if (lastGaze == go) {
-//			gazeTimer += Time.deltaTime;
-//			if (gazeTimer >= 1) {
-//				print ("Activated");
-//				gazeTimer = 0;
-//			}
-//		} else {
-//			lastGaze = go;
-//			gazeTimer = 0;
-//		}
-		List<GameObject> objUnderPointerL = leftCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
-		List<GameObject> objUnderPointerR = rightCanvas.GetComponent<CurvedUIRaycaster> ().GetObjectsHitByRay (ray);
-
-		List<GameObject> combObj = new List<GameObject> ();
-
-//		print (combObj.Count);
-		combObj.AddRange (objUnderPointerL);
-		combObj.AddRange (objUnderPointerR);
-		print (combObj.Count);
-		string s = "";
-		foreach (GameObject go in combObj) {
-			s += "\n" + go.name;
-			HandButton b = go.GetComponent<HandButton> ();
-			if (b != null) {
-				b.gazeTrigger = true;
-			} else {
-				print ("No HandButton");
-			}
-		}
-//		print (s);
-//
-//		if (objUnderPointerL == lastLeftC) {
-//			lCTimer += Time.deltaTime;
-//			if (lCTimer >= 1) {
-//				print ("ActivatedL");
-//				lCTimer = 0;
-//			}
-//		} else {
-//			lastLeftC = objUnderPointerL;
-//			lCTimer = 0;
-//		}
-//
-//		if (objUnderPointerR == lastRightC) {
-//			rCTimer += Time.deltaTime;
-//			if (rCTimer >= 1) {
-//				print ("ActivatedR");
-//				rCTimer = 0;
-//			}
-//		} else {
-//			lastRightC = objUnderPointerL;
-//			rCTimer = 0;
-//		}
-//		print ("LC:" + lCTimer);
-//		print ("RC:" + rCTimer);
-	}
          
 	public void ReturnToInventory (HandRole hand, Base_Item i) {
 
@@ -423,8 +348,50 @@ public class Player_Main : MonoBehaviour {
 		}
 	}
 
-	public void FetchFromInventory (GameObject item, int i) {
-		
+	public void FetchFromInventory (HandRole hand, Base_Item.ItemType iType) {
+		switch (hand)
+		{
+		case HandRole.LeftHand:
+			switch (iType) {
+			case Base_Item.ItemType.Melee:
+				if (leftHandItem) {
+					leftHandItem.PutDown ();
+				}
+				GameObject item = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity);
+				item.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
+				playerMelee_INV = null;
+				break;
+			case Base_Item.ItemType.Ranged:
+				if (leftHandItem) {
+					leftHandItem.PutDown ();
+				}
+				GameObject itemTwo = Instantiate (playerRanged_INV, leftController.transform.position, Quaternion.identity);
+				itemTwo.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
+				playerRanged_INV = null;
+				break;
+			}
+			break;
+		case HandRole.RightHand:
+			switch (iType) {
+			case Base_Item.ItemType.Melee:
+				if (rightHandItem) {
+					rightHandItem.PutDown ();
+				}
+				GameObject item = Instantiate (playerMelee_INV, rightController.transform.position, Quaternion.identity);
+				item.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
+				playerMelee_INV = null;
+				break;
+			case Base_Item.ItemType.Ranged:
+				if (rightHandItem) {
+					rightHandItem.PutDown ();
+				}
+				GameObject itemTwo = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity);
+				itemTwo.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
+				playerRanged_INV = null;
+				break;
+			}
+			break;
+		}
 	}
 	#endregion
 
