@@ -105,7 +105,7 @@ public class Physics_Item : Base_Item
         controllerObj = hand;
         handRole = handType;*/
         rb.useGravity = false;
-
+		GetComponent<BoxCollider> ().enabled = false;
         print(name + " picked up");
     }
     [Obsolete("Physics_Item.PutDown is obsolete, please use OnPutDown instead.")]
@@ -117,6 +117,7 @@ public class Physics_Item : Base_Item
         /*equipped = false;
         controllerObj = null;*/
         rb.useGravity = true;
+		GetComponent<BoxCollider> ().enabled = true;
     }
 
     [System.Obsolete("This is obsolete, Please override awake instead.")]

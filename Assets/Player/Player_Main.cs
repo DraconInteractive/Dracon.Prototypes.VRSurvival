@@ -311,15 +311,15 @@ public partial class Player_Main : MonoBehaviour {
 				if (playerMelee_INV != null) {
 					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
-				playerMelee_INV = i.itemPrefab;
-				Destroy (i.gameObject);
+				playerMelee_INV = i.gameObject;
+				playerMelee_INV.SetActive (false);
 				break;
 			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV, leftController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
-				playerRanged_INV = i.itemPrefab;
-				Destroy (i.gameObject);
+				playerRanged_INV = i.gameObject;
+				playerRanged_INV.SetActive (false);
 				break;
 			}
 			break;
@@ -331,17 +331,17 @@ public partial class Player_Main : MonoBehaviour {
 			{
 			case Base_Item.ItemType.Melee:
 				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV, rightController.transform.position, Quaternion.identity) as GameObject;
+					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
-				playerMelee_INV = i.itemPrefab;
-				Destroy (i.gameObject);
+				playerMelee_INV = i.gameObject;
+				playerMelee_INV.SetActive (false);
 				break;
 			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
 					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
-				playerRanged_INV = i.itemPrefab;
-				Destroy (i.gameObject);
+				playerRanged_INV = i.gameObject;
+				playerRanged_INV.SetActive (false);
 				break;
 			}
 			break;
@@ -349,24 +349,31 @@ public partial class Player_Main : MonoBehaviour {
 	}
 
 	public void FetchFromInventory (HandRole hand, Base_Item.ItemType iType) {
+		
 		switch (hand)
 		{
 		case HandRole.LeftHand:
 			switch (iType) {
 			case Base_Item.ItemType.Melee:
+				if (playerMelee_INV == null) {
+					break;
+				}
 				if (leftHandItem) {
 					leftHandItem.PutDown ();
 				}
-				GameObject item = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity);
-				item.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
+				playerMelee_INV.SetActive (true);
+				playerMelee_INV.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
 				playerMelee_INV = null;
 				break;
 			case Base_Item.ItemType.Ranged:
+				if (playerRanged_INV == null) {
+					break;
+				}
 				if (leftHandItem) {
 					leftHandItem.PutDown ();
 				}
-				GameObject itemTwo = Instantiate (playerRanged_INV, leftController.transform.position, Quaternion.identity);
-				itemTwo.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
+				playerRanged_INV.SetActive (true);
+				playerRanged_INV.GetComponent<Base_Item> ().PickUp (leftController, HandRole.LeftHand);
 				playerRanged_INV = null;
 				break;
 			}
@@ -374,19 +381,25 @@ public partial class Player_Main : MonoBehaviour {
 		case HandRole.RightHand:
 			switch (iType) {
 			case Base_Item.ItemType.Melee:
+				if (playerMelee_INV == null) {
+					break;
+				}
 				if (rightHandItem) {
 					rightHandItem.PutDown ();
 				}
-				GameObject item = Instantiate (playerMelee_INV, rightController.transform.position, Quaternion.identity);
-				item.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
+				playerMelee_INV.SetActive (true);
+				playerMelee_INV.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
 				playerMelee_INV = null;
 				break;
 			case Base_Item.ItemType.Ranged:
+				if (playerRanged_INV == null) {
+					break;
+				}
 				if (rightHandItem) {
 					rightHandItem.PutDown ();
 				}
-				GameObject itemTwo = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity);
-				itemTwo.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
+				playerRanged_INV.SetActive (true);
+				playerRanged_INV.GetComponent<Base_Item> ().PickUp (rightController, HandRole.RightHand);
 				playerRanged_INV = null;
 				break;
 			}
