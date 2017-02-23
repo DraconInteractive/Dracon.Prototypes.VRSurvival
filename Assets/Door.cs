@@ -26,7 +26,6 @@ public class Door : MonoBehaviour {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);
 			yield return null;
 		}
-		movementRoutine = null;
 		yield break;
 	}
 
@@ -37,7 +36,6 @@ public class Door : MonoBehaviour {
 			transform.position = Vector3.SmoothDamp (transform.position, targetPos, ref doorVel, 0.25f);
 			yield return null;
 		}
-		movementRoutine = null;
 		yield break;
 	}
 
@@ -45,18 +43,12 @@ public class Door : MonoBehaviour {
 		
 		if (open) {
 			if (!doorOpen) {
-				if (movementRoutine != null) {
-					StopCoroutine (movementRoutine);
-					movementRoutine = null;
-				}
+				StopCoroutine (movementRoutine);
 				StartCoroutine (OpenDoor ());
 			}
 		} else {
 			if (doorOpen) {
-				if (movementRoutine != null) {
-					StopCoroutine (movementRoutine);
-					movementRoutine = null;
-				}
+				StopCoroutine (movementRoutine);
 				StartCoroutine (CloseDoor ());
 			}
 		}
