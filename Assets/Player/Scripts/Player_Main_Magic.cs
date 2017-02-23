@@ -28,8 +28,9 @@ public partial class Player_Main : MonoBehaviour {
 			break;
 		case Spell.Push:
 			PushSpell (rightController);
+			break;
 		}
-		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
+//		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
 
 	void EndLeftCast () {
