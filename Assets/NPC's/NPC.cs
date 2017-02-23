@@ -26,15 +26,17 @@ public class NPC : MonoBehaviour {
 		if (!gazeTrigger && interacting) {
 			EndInteraction ();
 		}
-
+		anim.SetBool ("interacting", interacting);
 		if (interacting) {
 			if (!gazeTrigger) {
 				EndInteraction ();
 			}
 
-			if (laWeight < 1) {
-				laWeight += Time.deltaTime;
-			}
+//			if (laWeight < 0.75f) {
+//				laWeight += Time.deltaTime;
+//			}
+
+
 		} else {
 			if (gazeTrigger) {
 				BeginInteraction ();
@@ -56,13 +58,15 @@ public class NPC : MonoBehaviour {
 		anim.SetLookAtWeight (laWeight);
 	}
 
-	public void BeginInteraction () {
+	public virtual void BeginInteraction () {
 		interacting = true;
+
+		anim.SetTrigger ("OnSeePlayer");
 //		print ("Begun Interaction");
 //		Invoke ("EndInteraction", 3);
 	}
 
-	public void EndInteraction () {
+	public virtual void EndInteraction () {
 //		print ("Ending Interaction");
 		interacting = false;
 	}
