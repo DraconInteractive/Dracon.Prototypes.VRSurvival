@@ -409,46 +409,7 @@ public partial class Player_Main : MonoBehaviour {
 	#endregion
 
 	#region Magic Functions
-	void BeginLeftCast () {
-//		lSpell = Instantiate (spellTemplate, leftController.transform.position + leftController.transform.forward * 0.075f - leftController.transform.up * 0.05f, Quaternion.identity, leftController.transform);
-		switch (leftSpell)
-		{
-		case Spell.Gesture:
-			lSpell = Instantiate (gestureSpellTemplate, leftController.transform.position + leftController.transform.forward * 0.075f - leftController.transform.up * 0.05f, Quaternion.identity, leftController.transform);
-			leftRModel.GetComponent<Animator> ().SetBool ("pointing", true);
-			break;
-		}
-	}
 
-	void BeginRightCast () {
-//		rSpell = Instantiate (spellTemplate, rightController.transform.position + rightController.transform.forward * 0.075f - rightController.transform.up * 0.05f, Quaternion.identity, rightController.transform);
-		switch (rightSpell)
-		{
-		case Spell.Gesture:
-			rSpell = Instantiate (gestureSpellTemplate, rightController.transform.position + rightController.transform.forward * 0.075f - rightController.transform.up * 0.05f, Quaternion.identity, rightController.transform);
-			rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
-			break;
-		}
-		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
-	}
-
-	void EndLeftCast () {
-		Destroy (lSpell);
-		leftRModel.GetComponent<Animator> ().SetBool ("pointing", false);
-	}
-
-	void EndRightCast () {
-		Destroy (rSpell);
-		rightRModel.GetComponent<Animator> ().SetBool ("pointing", false);
-	}
-
-	void SetLeftSpell (Spell spell) {
-		leftSpell = spell;
-	}
-
-	void SetRightSpell (Spell spell) {
-		rightSpell = spell;
-	}
 	#endregion
 
 	#region UI Functions
