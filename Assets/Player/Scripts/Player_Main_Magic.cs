@@ -13,7 +13,7 @@ public partial class Player_Main : MonoBehaviour {
 			leftRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 			break;
 		case Spell.Push:
-			PushSpell (leftController);
+			CreatePushPointer (leftController);
 			break;
 		}
 	}
@@ -27,20 +27,40 @@ public partial class Player_Main : MonoBehaviour {
 			rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 			break;
 		case Spell.Push:
-			PushSpell (rightController);
+			CreatePushPointer (rightController);
 			break;
 		}
 //		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
 
 	void EndLeftCast () {
-		Destroy (lSpell);
-		leftRModel.GetComponent<Animator> ().SetBool ("pointing", false);
+		switch (leftSpell)
+		{
+		case Spell.Gesture:
+			Destroy (lSpell);
+			leftRModel.GetComponent<Animator> ().SetBool ("pointing", false);
+			break;
+		case Spell.Push:
+			PushSpell (leftController);
+			DestroyPushPointer (leftController);
+			break;
+		}
+
 	}
 
 	void EndRightCast () {
-		Destroy (rSpell);
-		rightRModel.GetComponent<Animator> ().SetBool ("pointing", false);
+		switch (rightSpell)
+		{
+		case Spell.Gesture:
+			Destroy (rSpell);
+			rightRModel.GetComponent<Animator> ().SetBool ("pointing", false);
+			break;
+		case Spell.Push:
+			PushSpell (rightController);
+			DestroyPushPointer (rightController);
+			break;
+		}
+
 	}
 
 	void SetLeftSpell (Spell spell) {
@@ -54,14 +74,25 @@ public partial class Player_Main : MonoBehaviour {
 	void PushSpell (GameObject hand) {
 		RaycastHit[] hits;
 		Ray ray = new Ray (hand.transform.position, hand.transform.forward);
-
-		hits = Physics.SphereCastAll (ray, 1, 50);
+		int l = ~(1 << LayerMask.NameToLayer("Player"));
+		hits = Physics.SphereCastAll (ray, 1, 10, l);
 
 		foreach (RaycastHit hit in hits) {
 			Rigidbody r = hit.transform.gameObject.GetComponent<Rigidbody> ();
 			if (r != null) {
-				r.AddForce (ray.direction * 10, ForceMode.VelocityChange);
+				r.AddForce (ray.direction * 10, ForceMode.Impulse);
 			}
 		}
+	}
+
+	void CreatePushPointer (GameObject hand) {
+		GameObject pointer = Instantiate (pushSpellTemplate, hand.transform.position, hand.transform.rotation, hand.transform) as GameObject;
+		PushSpellTemplate pointerScript = pointer.GetComponent<PushSpellTemplate> ();
+		pointerScript.targetHand = hand;
+	}
+
+	void DestroyPushPointer (GameObject hand) {
+		GameObject pointer = hand.transform.GetComponentInChildren<PushSpellTemplate> ().gameObject;
+		Destroy (pointer);
 	}
 }

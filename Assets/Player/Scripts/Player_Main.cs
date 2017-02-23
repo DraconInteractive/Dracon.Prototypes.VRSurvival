@@ -91,8 +91,8 @@ public partial class Player_Main : MonoBehaviour {
 	void Start () {
 		ToggleLeftMenu (false);
 		ToggleRightMenu (false);
-		EndRightCast ();
-		EndLeftCast ();
+//		EndRightCast ();
+//		EndLeftCast ();
 	}
 
 	void Update () {
@@ -312,6 +312,7 @@ public partial class Player_Main : MonoBehaviour {
 					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerMelee_INV = i.gameObject;
+				i.PutDown ();
 				playerMelee_INV.SetActive (false);
 				break;
 			case Base_Item.ItemType.Ranged:
@@ -319,6 +320,7 @@ public partial class Player_Main : MonoBehaviour {
 					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerRanged_INV = i.gameObject;
+				i.PutDown ();
 				playerRanged_INV.SetActive (false);
 				break;
 			}
@@ -334,6 +336,7 @@ public partial class Player_Main : MonoBehaviour {
 					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerMelee_INV = i.gameObject;
+				i.PutDown ();
 				playerMelee_INV.SetActive (false);
 				break;
 			case Base_Item.ItemType.Ranged:
@@ -341,6 +344,7 @@ public partial class Player_Main : MonoBehaviour {
 					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
 				}
 				playerRanged_INV = i.gameObject;
+				i.PutDown ();
 				playerRanged_INV.SetActive (false);
 				break;
 			}
