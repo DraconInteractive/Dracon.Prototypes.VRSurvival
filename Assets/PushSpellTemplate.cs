@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PushSpellTemplate : MonoBehaviour {
-	Player_Main player;
 	public GameObject targetHand;
 	LineRenderer[] l;
 	void Awake () {
-		player = Player_Main.player;
 		l = GetComponentsInChildren<LineRenderer> ();
 	}
 	// Use this for initialization

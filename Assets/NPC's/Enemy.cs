@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+	[HideInInspector]
 	public Animator anim;
 
 	List<GameObject> targets = new List<GameObject>();
@@ -22,6 +23,8 @@ public class Enemy : MonoBehaviour {
 	public float detectionRange, attackingRange;
 	public float speed;
 	bool moving;
+
+	bool dead;
 	void Awake () {
 		rb = GetComponent<Rigidbody> ();
 		anim = GetComponent<Animator> ();
@@ -37,6 +40,9 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (dead) {
+			return;
+		}
 		Detection ();
 		if (inCombat) {
 			Combat ();
@@ -136,9 +142,13 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 	public void Damage (int damage) {
+		if (dead) {
+			return;
+		}
 		health -= damage;
 		if (health <= 0) {
 			anim.SetTrigger ("Death");
+			dead = true;
 		} else {
 			anim.SetTrigger ("GetHit");
 		}

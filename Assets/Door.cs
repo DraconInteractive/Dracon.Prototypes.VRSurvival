@@ -43,13 +43,18 @@ public class Door : MonoBehaviour {
 		
 		if (open) {
 			if (!doorOpen) {
-				StopCoroutine (movementRoutine);
-				StartCoroutine (OpenDoor ());
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+				}
+
+				movementRoutine = StartCoroutine (OpenDoor ());
 			}
 		} else {
 			if (doorOpen) {
-				StopCoroutine (movementRoutine);
-				StartCoroutine (CloseDoor ());
+				if (movementRoutine != null) {
+					StopCoroutine (movementRoutine);
+				}
+				movementRoutine = StartCoroutine (CloseDoor ());
 			}
 		}
 	}
