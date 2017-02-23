@@ -27,7 +27,7 @@ public partial class Player_Main : MonoBehaviour {
 		//		print (combObj.Count);
 		combObj.AddRange (objUnderPointerL);
 		combObj.AddRange (objUnderPointerR);
-		print (combObj.Count);
+//		print (combObj.Count);
 		string s = "";
 		foreach (GameObject go in combObj) {
 			s += "\n" + go.name;
