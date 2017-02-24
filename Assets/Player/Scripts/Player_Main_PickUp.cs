@@ -233,6 +233,9 @@ public partial class Player_Main : MonoBehaviour {
 	}
 
 	public void PickUp (HandRole hand, Base_Item i) {
+		if (!i.interactable) {
+			return;
+		}
 		switch (hand) {
 		case HandRole.LeftHand:
 			if (leftHandItem != null) {
@@ -250,8 +253,8 @@ public partial class Player_Main : MonoBehaviour {
 				leftHandItem = null;
 				leftRModel.SetActive(true);
 			} else {
-				if (!i.interactable)
-					continue;
+//				if (!i.interactable)
+//					continue;
 
 				// Fancy hand switching.
 				if (i.equipped && i.handRole == HandRole.RightHand)
@@ -287,8 +290,8 @@ public partial class Player_Main : MonoBehaviour {
 				rightHandItem = null;
 				rightRModel.SetActive(true);
 			} else {
-				if (!i.interactable)
-					continue;
+//				if (!i.interactable)
+//					continue;
 
 				// Fancy hand switching.
 				if (i.equipped && i.handRole == HandRole.LeftHand)
