@@ -88,8 +88,8 @@ public class Physics_Item : Base_Item
         initStage = false;
         rb.useGravity = false;
         print(name + " picked up");
-//		transform.parent = null;
-//		rb.isKinematic = false;
+		transform.parent = null;
+		rb.isKinematic = false;
     }
 
     public override void OnPutDown()
