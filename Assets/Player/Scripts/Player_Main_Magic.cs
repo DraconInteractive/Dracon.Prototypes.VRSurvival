@@ -7,11 +7,11 @@ public partial class Player_Main : MonoBehaviour {
 	#region baseVar-SPELLS
 	[Header("baseVar SPELLS")]
 	public GameObject gestureSpellTemplate;
-	public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate, spearShotSpellTemplate;
+	public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate, spearShotSpellTemplate, singularitySpellTemplate;
 
 	GameObject lSpell, rSpell;
 
-	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword, Spear_Shot};
+	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword, Spear_Shot, Singularity};
 	public Spell leftSpell, rightSpell;
 	#endregion
 
@@ -144,5 +144,30 @@ public partial class Player_Main : MonoBehaviour {
 
 	void ShootSpear (GameObject hand) {
 		GameObject spear = Instantiate (spearShotSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, hand.transform.rotation);
+	}
+
+	void CreateSingularity (GameObject hand) {
+		GameObject projectile = Instantiate (singularitySpellTemplate, hand.transform.position, Quaternion.identity, hand.transform);
+	}
+
+	void ThrowSingularity (GameObject hand) {
+		Singularity singularity = hand.transform.GetComponentInChildren<Singularity> ();
+		singularity.transform.SetParent (null);
+
+		if (hand == leftController) {
+			var deviceL = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject> ().index);
+			singularity.rb.velocity = deviceL.velocity * 2;
+			singularity.rb.angularVelocity = deviceL.velocity * 2;
+		} else if (hand == rightController) {
+			var deviceR = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+			singularity.rb.velocity = deviceR.velocity * 2;
+			singularity.rb.angularVelocity = deviceR.velocity * 2;
+		}
+
+//		var device = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+//		var rigidbody = (leftHandItem as Physics_Item).rb;
+//		rigidbody.velocity = device.velocity * itemThrowRatio;
+//		rigidbody.angularVelocity = device.angularVelocity * itemThrowRatio;
+
 	}
 }
