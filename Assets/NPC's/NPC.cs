@@ -12,6 +12,8 @@ public class NPC : MonoBehaviour {
 
 	float laWeight;
 
+	public float currentHealth, maxHealth = 100;
+
 	// Use this for initialization
 	void Awake () {
 		anim = GetComponent<Animator> ();
@@ -19,6 +21,8 @@ public class NPC : MonoBehaviour {
 
 	void Start () {
 		laWeight = 0;
+		maxHealth = 100;
+		currentHealth = 100;
 	}
 
 	void Update () {
@@ -69,6 +73,22 @@ public class NPC : MonoBehaviour {
 	public virtual void EndInteraction () {
 //		print ("Ending Interaction");
 		interacting = false;
+	}
+
+	public void Damage (float amount) {
+		currentHealth -= amount;
+		if (currentHealth <= 0) {
+			Die ();
+		}
+	}
+
+	void Die () {
+		
+	}
+
+	public void Heal (float amount) {
+		currentHealth += amount;
+		currentHealth = Mathf.Clamp (currentHealth, 0, 100);
 	}
 }
 
