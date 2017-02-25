@@ -4,6 +4,17 @@ using UnityEngine;
 
 public partial class Player_Main : MonoBehaviour {
 
+	#region baseVar-SPELLS
+	[Header("baseVar SPELLS")]
+	public GameObject gestureSpellTemplate;
+	public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate, spearShotSpellTemplate;
+
+	GameObject lSpell, rSpell;
+
+	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword, Spear_Shot};
+	public Spell leftSpell, rightSpell;
+	#endregion
+
 	void BeginLeftCast () {
 		//		lSpell = Instantiate (spellTemplate, leftController.transform.position + leftController.transform.forward * 0.075f - leftController.transform.up * 0.05f, Quaternion.identity, leftController.transform);
 		switch (leftSpell)
@@ -14,6 +25,9 @@ public partial class Player_Main : MonoBehaviour {
 			break;
 		case Spell.Push:
 			CreatePushPointer (leftController);
+			break;
+		case Spell.Summon_Sword:
+			SummonSword (leftController);
 			break;
 		}
 	}
@@ -28,6 +42,9 @@ public partial class Player_Main : MonoBehaviour {
 			break;
 		case Spell.Push:
 			CreatePushPointer (rightController);
+			break;
+		case Spell.Summon_Sword:
+			SummonSword (rightController);
 			break;
 		}
 //		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
@@ -94,5 +111,9 @@ public partial class Player_Main : MonoBehaviour {
 	void DestroyPushPointer (GameObject hand) {
 		GameObject pointer = hand.transform.GetComponentInChildren<PushSpellTemplate> ().gameObject;
 		Destroy (pointer);
+	}
+
+	void SummonSword (GameObject hand) {
+		GameObject sword = Instantiate (summonSwordSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, Quaternion.identity);
 	}
 }

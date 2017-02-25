@@ -44,17 +44,6 @@ public partial class Player_Main : MonoBehaviour {
     public GameObject leftMenu, rightMenu;
     #endregion
 
-    #region baseVar-SPELLS
-    [Header("baseVar SPELLS")]
-    public GameObject gestureSpellTemplate;
-    public GameObject telekinesisSpellTemplate, levitateSpellTemplate, pushSpellTemplate, summonSwordSpellTemplate;
-
-	GameObject lSpell, rSpell;
-
-	public enum Spell {Gesture, Telekinesis, Levitate, Push, Summon_Sword};
-	public Spell leftSpell, rightSpell;
-    #endregion
-
     #region baseVar-ADAPTIVE COLLISIONS
     //	[HideInInspector]
     //	public CapsuleCollider playerCollider;
