@@ -29,6 +29,9 @@ public partial class Player_Main : MonoBehaviour {
 		case Spell.Summon_Sword:
 			SummonSword (leftController);
 			break;
+		case Spell.Spear_Shot:
+			CreateSpearPointer (leftController);
+			break;
 		}
 	}
 
@@ -46,6 +49,9 @@ public partial class Player_Main : MonoBehaviour {
 		case Spell.Summon_Sword:
 			SummonSword (rightController);
 			break;
+		case Spell.Spear_Shot:
+			CreateSpearPointer (rightController);
+			break;
 		}
 //		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
@@ -61,6 +67,10 @@ public partial class Player_Main : MonoBehaviour {
 			PushSpell (leftController);
 			DestroyPushPointer (leftController);
 			break;
+		case Spell.Spear_Shot:
+			DestroySpearPointer (leftController);
+			ShootSpear (leftController);
+			break;
 		}
 
 	}
@@ -75,6 +85,10 @@ public partial class Player_Main : MonoBehaviour {
 		case Spell.Push:
 			PushSpell (rightController);
 			DestroyPushPointer (rightController);
+			break;
+		case Spell.Spear_Shot:
+			DestroySpearPointer (rightController);
+			ShootSpear (rightController);
 			break;
 		}
 
@@ -108,12 +122,27 @@ public partial class Player_Main : MonoBehaviour {
 		pointerScript.targetHand = hand;
 	}
 
+	void CreateSpearPointer (GameObject hand) {
+		GameObject pointer = Instantiate (pushSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, hand.transform.rotation, hand.transform) as GameObject;
+		PushSpellTemplate pointerScript = pointer.GetComponent<PushSpellTemplate> ();
+		pointerScript.targetHand = hand;
+	}
+
 	void DestroyPushPointer (GameObject hand) {
+		GameObject pointer = hand.transform.GetComponentInChildren<PushSpellTemplate> ().gameObject;
+		Destroy (pointer);
+	}
+
+	void DestroySpearPointer (GameObject hand) {
 		GameObject pointer = hand.transform.GetComponentInChildren<PushSpellTemplate> ().gameObject;
 		Destroy (pointer);
 	}
 
 	void SummonSword (GameObject hand) {
 		GameObject sword = Instantiate (summonSwordSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, Quaternion.identity);
+	}
+
+	void ShootSpear (GameObject hand) {
+		GameObject spear = Instantiate (spearShotSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, hand.transform.rotation);
 	}
 }
