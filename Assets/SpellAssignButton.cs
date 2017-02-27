@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class SpellAssignButton : Base_Button {
 
-	public Player_Main.Spell spellToSet;
+	public Player_Magic.Spell spellToSet;
+	Player_Magic pMagic;
 
+	void Start () {
+		pMagic = Player_Magic.pMagic;
+	}
 	public override void ButtonFunction (GameObject hand) {
 		switch (hand.tag) {
 		case "PlayerHandL":
-			Player_Main.player.leftSpell = spellToSet;
+			pMagic.leftSpell = spellToSet;
 			break;
 		case "PlayerHandR":
-			Player_Main.player.rightSpell = spellToSet;
+			pMagic.rightSpell = spellToSet;
 			break;
 		}
 	}

@@ -20,7 +20,7 @@ public partial class Player_Main : MonoBehaviour {
     [Tooltip("Fastest speed the player can travel. M/s/s (yes that's metres per second per second)")]
     public float speed;
 
-    [Tooltip("How much velocity should we add to the trow.")]
+    [Tooltip("How much velocity should we add to the throw.")]
     public float itemThrowRatio = 1.2f;
     #endregion
 
@@ -154,21 +154,7 @@ public partial class Player_Main : MonoBehaviour {
 			}
 		}
 
-		if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Trigger) && rightHandItem == null) {
-			BeginRightCast ();
-		}
 
-		if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Trigger) && leftHandItem == null) {
-			BeginLeftCast ();
-		}
-
-		if (ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.Trigger) && rightHandItem == null) {
-			EndRightCast ();
-		}
-
-		if (ViveInput.GetPressUp(HandRole.LeftHand, ControllerButton.Trigger) && leftHandItem == null) {
-			EndLeftCast ();
-		}
 	}
          
 	public void ReturnToInventory (HandRole hand, Base_Item i) {
