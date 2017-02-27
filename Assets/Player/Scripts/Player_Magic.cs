@@ -71,6 +71,9 @@ public class Player_Magic : MonoBehaviour {
 		case Spell.Spear_Shot:
 			CreateSpearPointer (leftController);
 			break;
+		case Spell.Singularity:
+			CreateSingularity (leftController);
+			break;
 		}
 	}
 
@@ -91,6 +94,9 @@ public class Player_Magic : MonoBehaviour {
 		case Spell.Spear_Shot:
 			CreateSpearPointer (rightController);
 			break;
+		case Spell.Singularity:
+			CreateSingularity (rightController);
+			break;
 		}
 		//		rightRModel.GetComponent<Animator> ().SetBool ("pointing", true);
 	}
@@ -110,6 +116,9 @@ public class Player_Magic : MonoBehaviour {
 			DestroySpearPointer (leftController);
 			ShootSpear (leftController);
 			break;
+		case Spell.Singularity:
+			ThrowSingularity (leftController);
+			break;
 		}
 
 	}
@@ -128,6 +137,9 @@ public class Player_Magic : MonoBehaviour {
 		case Spell.Spear_Shot:
 			DestroySpearPointer (rightController);
 			ShootSpear (rightController);
+			break;
+		case Spell.Singularity:
+			ThrowSingularity (rightController);
 			break;
 		}
 

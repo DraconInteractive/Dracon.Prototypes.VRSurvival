@@ -7,6 +7,8 @@ public class SpellAssignButton : Base_Button {
 	public Player_Magic.Spell spellToSet;
 	Player_Magic pMagic;
 
+	public GameObject activateParticle;
+
 	void Start () {
 		pMagic = Player_Magic.pMagic;
 	}
@@ -19,5 +21,8 @@ public class SpellAssignButton : Base_Button {
 			pMagic.rightSpell = spellToSet;
 			break;
 		}
+
+		GameObject g = Instantiate (activateParticle, transform.position, Quaternion.identity) as GameObject;
+		Destroy (g, 1);
 	}
 }
