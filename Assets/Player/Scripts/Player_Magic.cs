@@ -204,7 +204,7 @@ public class Player_Magic : MonoBehaviour {
 	void ThrowSingularity (GameObject hand) {
 		Singularity singularity = hand.transform.GetComponentInChildren<Singularity> ();
 		singularity.transform.SetParent (null);
-
+		singularity.rb.useGravity = true;
 		if (hand == leftController) {
 			var deviceL = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject> ().index);
 			singularity.rb.velocity = deviceL.velocity * 2;
@@ -221,4 +221,6 @@ public class Player_Magic : MonoBehaviour {
 		//		rigidbody.angularVelocity = device.angularVelocity * itemThrowRatio;
 
 	}
+
+
 }

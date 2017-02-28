@@ -69,7 +69,6 @@ public partial class Player_Main : MonoBehaviour {
 	#endregion
 
 	#region Standard Functions
-	//TODO Invis rendermodels when equip item, reappear when disequip;
 	void Awake () {
 		player = GetComponent<Player_Main> ();
 		rb = GetComponent<Rigidbody> ();
