@@ -190,15 +190,15 @@ public class Player_Magic : MonoBehaviour {
 	}
 
 	void SummonSword (GameObject hand) {
-		GameObject sword = Instantiate (summonSwordSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, Quaternion.identity);
+		Instantiate (summonSwordSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, Quaternion.identity);
 	}
 
 	void ShootSpear (GameObject hand) {
-		GameObject spear = Instantiate (spearShotSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, hand.transform.rotation);
+		Instantiate (spearShotSpellTemplate, hand.transform.position - hand.transform.up * 0.25f, hand.transform.rotation);
 	}
 
 	void CreateSingularity (GameObject hand) {
-		GameObject projectile = Instantiate (singularitySpellTemplate, hand.transform.position, Quaternion.identity, hand.transform);
+		Instantiate (singularitySpellTemplate, hand.transform.position, Quaternion.identity, hand.transform);
 	}
 
 	void ThrowSingularity (GameObject hand) {

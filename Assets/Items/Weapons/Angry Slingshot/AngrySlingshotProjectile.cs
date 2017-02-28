@@ -23,7 +23,8 @@ public class AngrySlingshotProjectile : PhysProjectile
     {
         base.Fire(direction, origin, velocity);
         sound.PlayOneShot(launchSound);
-        hitGround = false;
+		//TODO make hitGround do something so it doesnt come up yellow in my console
+//        hitGround = false;
         Invoke("Die", 20f);
         particles.Emit(50);
     }

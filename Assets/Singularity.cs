@@ -40,7 +40,7 @@ public class Singularity : MonoBehaviour {
 			if (g.GetComponent<SingularityApplication>()) {
 				break;
 			}
-			Rigidbody r = g.GetComponent<Rigidbody> ();
+//			Rigidbody r = g.GetComponent<Rigidbody> ();
 
 			SingularityApplication sA = g.AddComponent<SingularityApplication> ();
 

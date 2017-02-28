@@ -21,9 +21,6 @@ public class Physics_Item : Base_Item
 
     public bool dropOnAwake;
 
-   
-
-
     internal override void Awake()
     {
         base.Awake();
@@ -98,7 +95,7 @@ public class Physics_Item : Base_Item
         rb.useGravity = true;
     }
     [Obsolete("Physics_Item.PickUp is obsolete, please use OnPickup instead.")]
-    public virtual void PickUp(GameObject hand, HandRole handType)
+    new public virtual void PickUp(GameObject hand, HandRole handType)
     {
         Debug.LogWarning("Old Method");
 
@@ -111,7 +108,7 @@ public class Physics_Item : Base_Item
         print(name + " picked up");
     }
     [Obsolete("Physics_Item.PutDown is obsolete, please use OnPutDown instead.")]
-    public virtual void PutDown()
+    new public virtual void PutDown()
     {
         Debug.LogWarning("Old Method");
 

@@ -6,21 +6,21 @@ using UnityEngine.UI;
 public class HandButton : MonoBehaviour {
 //	public float f;
 
-	Button thisButton;
+//	Button thisButton;
 	Image i;
-	Color initColor;
+//	Color initColor;
 
 	public bool gazeTrigger;
 	float gazeTimer = 0;
 	[HideInInspector]
 	public Player_Main player;
 	void Awake () {
-		thisButton = GetComponent<Button> ();
+//		thisButton = GetComponent<Button> ();
 		i = GetComponent<Image> ();
 	}
 
 	void Start () {
-		initColor = i.color;
+//		initColor = i.color;
 		player = Player_Main.player;
 //		f = 1;
 	}

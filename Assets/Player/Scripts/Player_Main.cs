@@ -57,8 +57,8 @@ public partial class Player_Main : MonoBehaviour {
 	public Image topLeftImg, topRightImg;
 
 	public GameObject leftCanvas, rightCanvas;
-	List<GameObject> lastLeftC = new List<GameObject>();
-	List<GameObject> lastRightC = new List<GameObject>();
+//	List<GameObject> lastLeftC = new List<GameObject>();
+//	List<GameObject> lastRightC = new List<GameObject>();
 	float lCTimer, rCTimer;
 
 	public Button returnToInvButtonL, returnToINVButtonR;
@@ -129,7 +129,6 @@ public partial class Player_Main : MonoBehaviour {
 
     #region Interaction Functions
 
-   
 	void P_Input () {
 		if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Grip)) {
 			PickUpWithLeft ();
@@ -168,7 +167,7 @@ public partial class Player_Main : MonoBehaviour {
 			{
 			case Base_Item.ItemType.Melee:
 				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
+					Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity);
 				}
 				playerMelee_INV = i.gameObject;
 				i.PutDown ();
@@ -176,7 +175,7 @@ public partial class Player_Main : MonoBehaviour {
 				break;
 			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
+					Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity);
 				}
 				playerRanged_INV = i.gameObject;
 				i.PutDown ();
@@ -192,7 +191,7 @@ public partial class Player_Main : MonoBehaviour {
 			{
 			case Base_Item.ItemType.Melee:
 				if (playerMelee_INV != null) {
-					GameObject g = Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity) as GameObject;
+					Instantiate (playerMelee_INV, leftController.transform.position, Quaternion.identity);
 				}
 				playerMelee_INV = i.gameObject;
 				i.PutDown ();
@@ -200,7 +199,7 @@ public partial class Player_Main : MonoBehaviour {
 				break;
 			case Base_Item.ItemType.Ranged:
 				if (playerRanged_INV != null) {
-					GameObject g = Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity) as GameObject;
+					Instantiate (playerRanged_INV, rightController.transform.position, Quaternion.identity);
 				}
 				playerRanged_INV = i.gameObject;
 				i.PutDown ();

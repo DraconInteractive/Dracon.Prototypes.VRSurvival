@@ -10,14 +10,14 @@ public class Chopping_Axe : Physics_Item {
 
 	float timer, tTarget;
 
-	void Start () {
-		BaseStart ();
+	internal override void  Start () {
+		base.Start ();
 		timer = 0;
 		tTarget = 1;
 	}
 
-	void Update () {
-		BaseUpdate ();
+	internal override void Update () {
+		base.Update ();
 		if (timer <= tTarget) {
 			timer += Time.deltaTime;
 		}

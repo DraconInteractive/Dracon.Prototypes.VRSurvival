@@ -11,8 +11,8 @@ public class Sword : Physics_Item {
 	public GameObject hilt;
 
 	public GameObject particleSys;
-	void Start () {
-		BaseStart ();
+	internal override void Start () {
+		base.Start ();
 		recharged = true;
 	}
 
@@ -31,7 +31,7 @@ public class Sword : Physics_Item {
 
 				foreach (RaycastHit hit in hits) {
 					if (hit.collider == col) {
-						GameObject p = Instantiate (particleSys, hit.point, Quaternion.identity, col.gameObject.transform);
+						Instantiate (particleSys, hit.point, Quaternion.identity, col.gameObject.transform);
 						break;
 					}
 				}
