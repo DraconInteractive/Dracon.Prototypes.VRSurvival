@@ -205,15 +205,11 @@ public class Player_Magic : MonoBehaviour {
 		Singularity singularity = hand.transform.GetComponentInChildren<Singularity> ();
 		singularity.transform.SetParent (null);
 		singularity.rb.useGravity = true;
-		if (hand == leftController) {
-			var deviceL = SteamVR_Controller.Input ((int)leftController.GetComponent<SteamVR_TrackedObject> ().index);
-			singularity.rb.velocity = deviceL.velocity * 2;
-			singularity.rb.angularVelocity = deviceL.velocity * 2;
-		} else if (hand == rightController) {
-			var deviceR = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
-			singularity.rb.velocity = deviceR.velocity * 2;
-			singularity.rb.angularVelocity = deviceR.velocity * 2;
-		}
+
+		var device = SteamVR_Controller.Input ((int)hand.GetComponent<SteamVR_TrackedObject> ().index);
+		singularity.rb.velocity = device.velocity * 2;
+		singularity.rb.angularVelocity = device.velocity * 2;
+
 
 		//		var device = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
 		//		var rigidbody = (leftHandItem as Physics_Item).rb;
