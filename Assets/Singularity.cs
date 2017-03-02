@@ -45,6 +45,7 @@ public class Singularity : MonoBehaviour {
 			SingularityApplication sA = g.AddComponent<SingularityApplication> ();
 
 			sA.singularityPosition = transform.position;
+			sA.Activate ();
 		}
 		floatPos = transform.position + Vector3.up;
 		floating = true;
