@@ -36,9 +36,11 @@ public class Singularity : MonoBehaviour {
 		Collider [] objs = Physics.OverlapSphere(transform.position, 5);
 
 		foreach (Collider c in objs) {
+
 			GameObject g = c.gameObject;
-			if (g.GetComponent<SingularityApplication>()) {
-				break;
+
+			if (g.GetComponent<SingularityApplication>() || !g.GetComponent<Rigidbody>() || g.tag == "Player") {
+				continue;
 			}
 //			Rigidbody r = g.GetComponent<Rigidbody> ();
 

@@ -14,6 +14,10 @@ public class SingularityApplication : MonoBehaviour {
 	}
 
 	public void Activate () {
+		if (rb == null) {
+			Deactivate ();
+			return;
+		}
 		rb.useGravity = false;
 		rb.AddExplosionForce (10, singularityPosition, 5, 0.5f, ForceMode.VelocityChange);
 		Invoke ("Deactivate", 5);

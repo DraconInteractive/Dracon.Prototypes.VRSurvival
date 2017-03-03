@@ -28,9 +28,23 @@ public class Pistol : Physics_Item {
 		RaycastHit hit;
 		if (Physics.Raycast(ray, out hit, 50)) {
 			Instantiate (bulletParticleDecal, hit.point, Quaternion.identity);
+
+			string hitTag = hit.collider.tag;
+			if (hitTag == "Enemy") {
+				FireHit (hit.collider.gameObject);
+			}
 		}
 		yield return new WaitForSeconds (fireWait);
 		fireRoutine = null;
 		yield break;
+	}
+
+	void FireHit (GameObject hitObj) {
+		Enemy e = hitObj.GetComponent<Enemy> ();
+		if (e == null) {
+			return;
+		}
+
+		e.Damage (20);
 	}
 }

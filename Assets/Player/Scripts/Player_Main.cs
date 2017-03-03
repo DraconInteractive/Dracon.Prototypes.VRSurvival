@@ -87,6 +87,10 @@ public partial class Player_Main : MonoBehaviour {
 		P_Input ();
 		PlayerMenu ();
 		GazeUpdate ();
+
+//		var device = SteamVR_Controller.Input((int)leftController.GetComponent<SteamVR_TrackedObject>().index);
+//		Debug.DrawRay (leftController.transform.position, device.velocity, Color.red);
+
 	}
 	// Update is called once per frame
 	void FixedUpdate () {
