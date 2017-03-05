@@ -52,7 +52,13 @@ public class Singularity : MonoBehaviour {
 		floatPos = transform.position + Vector3.up;
 		floating = true;
 		rb.useGravity = false;
+		GetComponent<Collider> ().enabled = false;
+		Destroy (this.gameObject, 5);
 	} 
+
+	void Death () {
+		
+	}
 
 
 }
