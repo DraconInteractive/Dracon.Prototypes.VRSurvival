@@ -12,6 +12,8 @@ public class Physics_Item : Base_Item
     public Vector3 itemVel;
     [HideInInspector]
     public Vector3 initPos;
+	[HideInInspector]
+	public Quaternion initRot;
     [HideInInspector]
     public bool initStage;
     [HideInInspector]
@@ -29,6 +31,7 @@ public class Physics_Item : Base_Item
         rb.useGravity = false;
         initStage = true;
         initPos = transform.position;
+		initRot = transform.rotation;
         //		rb.isKinematic = true;
 
         if (dropOnAwake)
@@ -59,8 +62,11 @@ public class Physics_Item : Base_Item
             transform.position = Vector3.SmoothDamp(transform.position, controllerObj.transform.position, ref itemVel, 0.025f);
             transform.rotation = Quaternion.Lerp(transform.rotation, controllerObj.transform.rotation, 0.8f);
         }
-        else if (initStage)
+		else if (initStage)
+		{
             transform.position = initPos;
+			transform.rotation = initRot;
+		}
     }
     [System.Obsolete("This is obsolete, please override update instead.")]
     public void BaseUpdate()

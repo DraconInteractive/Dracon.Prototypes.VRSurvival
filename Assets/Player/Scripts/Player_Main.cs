@@ -10,7 +10,8 @@ public partial class Player_Main : MonoBehaviour {
 	#region baseVar-STD
 	public static Player_Main player;
 
-	Rigidbody rb;
+	[HideInInspector]
+	public Rigidbody rb;
 
 	public GameObject leftController, rightController;
 	public GameObject leftRModel, rightRModel;
