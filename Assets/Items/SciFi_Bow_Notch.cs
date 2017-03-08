@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SciFi_Bow_Notch : Base_Item {
 
+	public GameObject arrow;
 	internal override void Update () {}
 
 	public override void OnPickup (GameObject hand, HTC.UnityPlugin.Vive.HandRole handRole)

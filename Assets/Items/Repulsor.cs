@@ -5,14 +5,14 @@ using HTC.UnityPlugin.Vive;
 
 public class Repulsor : Physics_Item {
 
-	bool activated;
+//	bool activated;
 	public ParticleSystem ps;
 //	Player_Main player;
 
 	internal override void Start ()
 	{
 		base.Start ();
-		activated = false;
+//		activated = false;
 		ps.Stop ();
 	}
 
