@@ -6,13 +6,14 @@ using HTC.UnityPlugin.Vive;
 public class Repulsor : Physics_Item {
 
 	bool activated;
-
+	public ParticleSystem ps;
 //	Player_Main player;
 
 	internal override void Start ()
 	{
 		base.Start ();
 		activated = false;
+		ps.Stop ();
 	}
 
 	internal override void Update ()
@@ -20,12 +21,12 @@ public class Repulsor : Physics_Item {
 		base.Update ();
 
 		if (ViveInput.GetPressDown(handRole, ControllerButton.HairTrigger)) {
-			player.rb.AddForce (controllerObj.transform.forward * 6 * ViveInput.GetTriggerValue(handRole, false) * Time.deltaTime, ForceMode.VelocityChange);
+			player.rb.AddForce (transform.up * 6 * Time.deltaTime, ForceMode.VelocityChange);
+			var em = ps.emission;
+			em.rateOverTime = 5;
+		} else {
+			var em = ps.emission;
+			em.rateOverTime = 0;
 		}
-//		if (activated) {
-//			
-//		}
-
-//		ViveInput.GetTrig
 	}
 }
