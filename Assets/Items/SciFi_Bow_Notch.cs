@@ -25,6 +25,33 @@ public class SciFi_Bow_Notch : Base_Item {
 		}
 	}
 
+//	internal override void Update()
+//	{
+//		base.Update();
+//		if (!notchGrabbed)
+//			return;
+//
+//		Vector3 pullPosition = notch.controllerObj.transform.position;
+//		Vector3 fromPosition = transform.TransformPoint(slingForkPoint);
+//
+//		float distance = Vector3.Distance(fromPosition, pullPosition);
+//		distance = Mathf.Clamp(distance, 0, maximumDistance);
+//
+//		stretchDecimal = distance / maximumDistance;
+//
+//		SetSlingStrech(stretchDecimal);
+//
+//		normal = (fromPosition - pullPosition).normalized;
+//
+//		graphic.rotation = Quaternion.LookRotation(normal.normalized, transform.forward);
+//
+//		if(currentProjectile != null)
+//		{
+//			currentProjectile.transform.position = fromPosition - (normal * distance);
+//			currentProjectile.transform.forward = normal;
+//		}
+//	}
+
 	public override void OnPickup (GameObject hand, HTC.UnityPlugin.Vive.HandRole handRole)
 	{
 		OnGrabbed ();

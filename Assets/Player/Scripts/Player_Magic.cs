@@ -38,11 +38,15 @@ public class Player_Magic : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (ViveInput.GetPressDown(HandRole.RightHand, ControllerButton.Trigger) && player.rightHandItem == null) {
-			BeginRightCast ();
+			if (!CheckForString(rightController)) {
+				BeginRightCast ();
+			}
 		}
 
 		if (ViveInput.GetPressDown(HandRole.LeftHand, ControllerButton.Trigger) && player.leftHandItem == null) {
-			BeginLeftCast ();
+			if (!CheckForString(leftController)) {
+				BeginLeftCast ();
+			}
 		}
 
 		if (ViveInput.GetPressUp(HandRole.RightHand, ControllerButton.Trigger) && player.rightHandItem == null) {
@@ -218,5 +222,16 @@ public class Player_Magic : MonoBehaviour {
 
 	}
 
+	bool CheckForString (GameObject hand) {
+		Collider[] c = Physics.OverlapSphere (hand.transform.position, 0.25f);
+		bool foundString = false;
+		foreach (Collider co in c) {
+			if (co.tag == "String") {
+				foundString = true;
+				break;
+			}
+		}
 
+		return foundString;
+	}
 }
